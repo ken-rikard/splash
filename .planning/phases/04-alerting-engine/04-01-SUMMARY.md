@@ -115,6 +115,18 @@ None — no external service configuration required.
 - The `AlertEngine` class has placeholder `activeAlerts` Map and private `evaluate()` helpers already structured for Plan 02's evaluation logic
 - Server has `express.json()` and alert config endpoints in place — Plan 02 can add `/api/alerts/active` endpoint and wire `evaluate()` to `data-update` events
 
+## Self-Check: PASSED
+
+- ✅ `src/core/types.ts` — contains `export interface AlertConfig` and `export interface ActiveAlert`
+- ✅ `src/core/alert-engine.ts` — contains `export class AlertEngine` with setConfig, getConfig, getAllConfigs, removeConfig
+- ✅ `tests/core/alert-engine.test.ts` — 5 config CRUD tests all pass
+- ✅ `server.ts` — express.json() after cors(), alertEngine instantiated, GET/PUT/DELETE endpoints wired
+- ✅ Commits: `8142a6d` (RED test), `0ba541e` (GREEN feat), `2266ade` (Task 2 feat), `9316fe7` (SUMMARY)
+- ✅ `npx tsc --noEmit` — compiles with zero errors
+- ✅ `npx tsx server.ts` — starts, fetches 84 rivers, server status ok
+- ✅ REST endpoints: GET `[]`, PUT stores config, DELETE returns removed/404, invalid inputs return 400
+- ✅ Pre-existing endpoints (`/api/rivers`, `/api/events`) continue working
+
 ---
 
 *Phase: 04-alerting-engine*
