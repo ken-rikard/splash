@@ -4,6 +4,7 @@ import { ScraperEngine } from './core/engine.js'
 import { NveHydApiAdapter } from './adapters/nve.js'
 import { RiverRegistry } from './core/river-registry.js'
 import { defaultConfig } from './config.js'
+import { AlertEngine } from './core/alert-engine.js'
 
 const config = defaultConfig()
 const registry = new RiverRegistry()
@@ -11,7 +12,10 @@ const engine = new ScraperEngine(config, registry)
 
 engine.register(new NveHydApiAdapter())
 
+const alertEngine = new AlertEngine()
+
 engine.eventBus.on('data-update', (rivers) => {
+  alertEngine.evaluate(rivers)
   console.log(`Flow data updated: ${rivers.length} rivers`)
 })
 
@@ -35,4 +39,4 @@ function shutdown() {
 process.on('SIGTERM', shutdown)
 process.on('SIGINT', shutdown)
 
-export { engine }
+export { engine, alertEngine }

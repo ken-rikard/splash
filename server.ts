@@ -1,8 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
-import { engine } from './src/index.js'
-import { AlertEngine } from './src/core/alert-engine.js'
+import { engine, alertEngine } from './src/index.js'
 import type { RiverData, AlertLevel } from './src/core/types.js'
 
 const PORT = parseInt(process.env.PORT ?? '3000', 10)
@@ -31,8 +30,6 @@ async function refreshRegistryCache() {
 
 refreshRegistryCache()
 setInterval(refreshRegistryCache, 60000)
-
-const alertEngine = new AlertEngine()
 
 // REST: return all rivers
 app.get('/api/rivers', (_req, res) => {
@@ -96,6 +93,11 @@ app.delete('/api/alerts/config/:id', (req, res) => {
     return
   }
   res.json({ removed: true })
+})
+
+// GET /api/alerts/active — list currently triggered alerts
+app.get('/api/alerts/active', (_req, res) => {
+  res.json(alertEngine.getActiveAlerts())
 })
 
 // SSE: push real-time events
