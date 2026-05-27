@@ -55,8 +55,8 @@ Four sizes, two weights, using existing Tailwind v4 defaults (rem-based):
 | Role | Size | Weight | Line Height | Tailwind Class | Usage |
 |------|------|--------|-------------|----------------|-------|
 | Body | 14px / 0.875rem | 400 (Regular) | 1.5 (relaxed) | `text-sm leading-relaxed` | RiverDetailPage description, page subtitles |
-| Label / Meta | 12px / 0.75rem | 500 (Medium) | 1.4 | `text-xs font-medium` | Alert timestamps, level labels, threshold text, NavBar links, metadata |
-| Heading | 18px / 1.125rem | 600 (Semibold) | 1.2 (tight) | `text-lg font-semibold` | Alert card river name, section headings ("Alert Configuration") |
+| Label / Meta | 12px / 0.75rem | 400 (Regular) | 1.4 | `text-xs font-normal` | Alert timestamps, level labels, threshold text, NavBar links, metadata |
+| Heading | 18px / 1.125rem | 700 (Bold) | 1.2 (tight) | `text-lg font-bold` | Alert card river name, section headings ("Alert Configuration") |
 | Display | 30px / 1.875rem | 700 (Bold) | 1.1 | `text-3xl font-bold tracking-tight` | Page titles ("Alerts", "River Levels") |
 
 **Font-family assignments:**
@@ -282,7 +282,7 @@ activeAlert received via SSE/REST → rendered in list
 │ OR (empty state):                       │
 │                                         │
 │     🔕                                  │  ← BellOff, h-12 w-12, text-slate-600
-│     All clear                           │  ← h2, text-lg, font-display, semibold
+│     All clear                           │  ← h2, text-lg, font-display, bold
 │     No rivers are currently exceeding   │  ← p, text-sm, text-slate-400, max-w-sm
 │     their configured thresholds.        │
 │                                         │
@@ -302,7 +302,7 @@ activeAlert received via SSE/REST → rendered in list
 ```
 [Waves] Splash    River Levels    Alerts (3)    Favorites    Settings
                                     ↑
-                              text-xs font-medium text-slate-400
+                              text-xs font-normal text-slate-400
                               count conditional: "Alerts" or "Alerts ({count})"
 ```
 
