@@ -547,7 +547,7 @@ export function RiverCard({ river }: { river: RiverData }) {
 | A5 | No Vite-plugin-pwa version constraint | Standard Stack | Medium — if vite-plugin-pwa doesn't support Vite 8, fall back to manual manifest.json. Verify at install time |
 | A6 | Phase 2 has no external environment dependencies beyond Node.js | Environment | Low — confirmed by auditing Phase 1 deps; UI is purely frontend code |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Server entry point location**
    - What we know: Need a server that imports Phase 1 engine + Express routes. The existing `src/index.ts` is the scraper entry point.
