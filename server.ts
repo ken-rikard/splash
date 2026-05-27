@@ -2,7 +2,8 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { engine } from './src/index.js'
-import type { RiverData } from './src/core/types.js'
+import { AlertEngine } from './src/core/alert-engine.js'
+import type { RiverData, AlertLevel } from './src/core/types.js'
 
 const PORT = parseInt(process.env.PORT ?? '3000', 10)
 const app = express()
@@ -10,6 +11,7 @@ const clients = new Set<express.Response>()
 
 // Middleware
 app.use(cors())
+app.use(express.json())
 
 function enrichWithRegistry(river: RiverData) {
   const entry = engine.registry ? registryCache.get(river.id) : undefined
@@ -30,6 +32,8 @@ async function refreshRegistryCache() {
 refreshRegistryCache()
 setInterval(refreshRegistryCache, 60000)
 
+const alertEngine = new AlertEngine()
+
 // REST: return all rivers
 app.get('/api/rivers', (_req, res) => {
   const rivers = engine.dataStore.getAll().map(enrichWithRegistry)
@@ -44,6 +48,54 @@ app.get('/api/rivers/:id', (req, res) => {
     return
   }
   res.json(enrichWithRegistry(river))
+})
+
+// Alert Config REST endpoints
+
+// GET /api/alerts/config — list all alert configurations
+app.get('/api/alerts/config', (_req, res) => {
+  res.json(alertEngine.getAllConfigs())
+})
+
+// PUT /api/alerts/config/:id — upsert alert config for a river with inline validation
+app.put('/api/alerts/config/:id', (req, res) => {
+  const { type, level, customValue, enabled } = req.body
+
+  if (!type || (type !== 'level' && type !== 'numeric')) {
+    res.status(400).json({ error: 'type must be "level" or "numeric"' })
+    return
+  }
+
+  if (type === 'level') {
+    if (typeof level !== 'number' || level < 1 || level > 5 || !Number.isInteger(level)) {
+      res.status(400).json({ error: 'level must be an integer between 1 and 5' })
+      return
+    }
+  } else {
+    if (typeof customValue !== 'number' || customValue <= 0) {
+      res.status(400).json({ error: 'customValue must be a positive number' })
+      return
+    }
+  }
+
+  const config = alertEngine.setConfig({
+    riverId: req.params.id,
+    type,
+    level: type === 'level' ? level as AlertLevel : undefined,
+    customValue: type === 'numeric' ? customValue : undefined,
+    enabled: enabled !== false,
+  })
+  res.json(config)
+})
+
+// DELETE /api/alerts/config/:id — remove alert config for a river
+app.delete('/api/alerts/config/:id', (req, res) => {
+  const removed = alertEngine.removeConfig(req.params.id)
+  if (!removed) {
+    res.status(404).json({ error: 'No config found for this river' })
+    return
+  }
+  res.json({ removed: true })
 })
 
 // SSE: push real-time events
