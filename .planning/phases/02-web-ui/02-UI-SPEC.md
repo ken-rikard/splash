@@ -56,6 +56,18 @@ Exceptions:
 | Heading | 20px | 600 (Semibold) | 1.2 |
 | Display | 28px | 700 (Bold) | 1.2 |
 
+**Override:** 4 weights used (400, 500, 600, 700) — shadcn defaults, developer-approved.
+
+---
+
+## Visual Hierarchy
+
+Primary screen (dashboard) focal points, in priority order:
+
+1. **Water level reading** (number) — most prominent, largest type on each river card
+2. **Status indicator dot** — color-coded to the five-level danger scale, positioned adjacent to water level
+3. **River name** — secondary identification text below the level
+
 ---
 
 ## Color
