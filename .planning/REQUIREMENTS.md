@@ -3,88 +3,73 @@
 **Defined:** 2026-05-27
 **Core Value:** Reliable river flow monitoring with timely alerts when water levels cross critical thresholds.
 
-## v1 Requirements
-
-### Scraping
-
-- [ ] **SCRP-01**: System fetches water level data from hvorerdetvann.com on a configurable schedule
-- [ ] **SCRP-02**: System parses river name, current level, and position on the five-level scale
-- [ ] **SCRP-03**: System handles scrape failures gracefully (retry, stale-data fallback, user-visible error)
-- [ ] **SCRP-04**: Datasources are implemented via pluggable adapters so new sources can be added without touching core logic
+## v1.1 Requirements
 
 ### Favorites
 
-- [ ] **FAV-01**: User can add any river to a favorites list
-- [ ] **FAV-02**: User can remove rivers from favorites
-- [ ] **FAV-03**: Favorites persist across page reloads (localStorage or equivalent)
+- [ ] **FAV-01**: User can add/remove rivers to/from a favorites list from the dashboard and river detail page
+- [ ] **FAV-02**: User's favorites persist across sessions via localStorage (works in PWA and Capacitor wrappers)
 
 ### Alerts
 
-- [ ] **ALRT-01**: User can set a per-river alert threshold tied to the five-level scale
-- [ ] **ALRT-02**: User receives an in-app notification when a river crosses its threshold
-- [ ] **ALRT-03**: User can clear or dismiss active alerts
+- [ ] **ALERT-01**: User can set per-river alert threshold by danger level (1-5 scale)
+- [ ] **ALERT-02**: User can set per-river custom numeric threshold (m³/s)
+- [ ] **ALERT-03**: User receives in-app notification when a river crosses its configured threshold
+- [ ] **ALERT-04**: User can view dedicated alerts page showing active and past alerts with timestamps
 
-### UI
+### PWA Readiness
 
-- [ ] **UI-01**: Dashboard shows all favorited rivers with current level and status indicator
-- [ ] **UI-02**: River detail page shows current level, the five-level scale position, and alert configuration
-- [ ] **UI-03**: UI is responsive and usable on mobile viewports
-- [ ] **UI-04**: Architecture is wrappable via WebView/Capacitor for future native mobile apps
+- [ ] **PWA-01**: Service worker caches work reliably with localStorage-based state — no data loss on refresh
 
-## v2 Requirements
+### Architecture
 
-Deferred to future release. Tracked but not in current roadmap.
+- [ ] **ARC-01**: Alert evaluation runs server-side during each scrape cycle (in ScraperEngine event handler)
+- [ ] **ARC-02**: Alert state in-memory for now (no persistent alert history beyond the current session)
 
-### Notifications
+## Future Requirements
 
-- **NOTF-01**: User receives push notifications on iOS/Android via native wrapper
-- **NOTF-02**: Push notification settings are configurable per river
+### Notifications v2
 
-### History
+- **NOTF-01**: Push notifications via service worker (for PWA installs)
+- **NOTF-02**: Alert dismissal syncs across tabs via BroadcastChannel API
+- **NOTF-03**: Export/import favorites for device migration
 
-- **HIST-01**: Historical water level data is stored and viewable over time
-- **HIST-02**: Charts show level trends for each river
+### Favorites v2
 
-### Multi-source
-
-- **MSRC-01**: User can add custom datasource URLs via the UI
-- **MSRC-02**: Datasource status is visible (last fetch time, errors)
+- **FAV-03**: Categorize favorites into custom groups/lists
+- **FAV-04**: Search and filter within favorites
+- **FAV-05**: Sort favorites by current level, danger level, or name
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| Native mobile app | v1 is web-only; designed for future wrapping via Capacitor/WebView |
-| Push notifications | Requires native app infrastructure; deferred to v2 |
-| User authentication | Single-user app for v1; no auth backend needed |
-| Historical data lake | Storage of historical levels deferred to v2 |
-| Custom datasource UI | v1 datasources are configured in code via adapter pattern |
-| Public API | Splash is a consumer app, not a data provider |
+| Server-side auth | v1.1 is still single-user; favorites and alerts are local |
+| Push notifications | Requires service worker push infra and notification permission flow — defer to v2 |
+| Persistent alert history | In-memory only for v1.1; no database needed yet |
+| Email/SMS alerts | Out of scope until push notifications land |
+| Alert sound/vibration | Simple visual indicator only for v1.1 |
+| Favorite sync between devices | Would require backend storage and auth |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCRP-01 | Phase 1 | Pending |
-| SCRP-02 | Phase 1 | Pending |
-| SCRP-03 | Phase 1 | Pending |
-| SCRP-04 | Phase 1 | Pending |
 | FAV-01 | Phase 3 | Pending |
 | FAV-02 | Phase 3 | Pending |
-| FAV-03 | Phase 3 | Pending |
-| ALRT-01 | Phase 3 | Pending |
-| ALRT-02 | Phase 3 | Pending |
-| ALRT-03 | Phase 3 | Pending |
-| UI-01 | Phase 2 | Pending |
-| UI-02 | Phase 2 | Pending |
-| UI-03 | Phase 2 | Pending |
-| UI-04 | Phase 2 | Pending |
+| ALERT-01 | Phase 4 | Pending |
+| ALERT-02 | Phase 4 | Pending |
+| ALERT-03 | Phase 5 | Pending |
+| ALERT-04 | Phase 5 | Pending |
+| PWA-01 | Phase 3 | Pending |
+| ARC-01 | Phase 4 | Pending |
+| ARC-02 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 14 total
-- Mapped to phases: 14
+- v1.1 requirements: 9 total
+- Mapped to phases: 9
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-05-27*
-*Last updated: 2026-05-27 after initial definition*
+*Last updated: 2026-05-27 after milestone definition*

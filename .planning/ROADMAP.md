@@ -1,12 +1,14 @@
 # Roadmap: Splash
 
-**Phases:** 3 | **Requirements mapped:** 14/14 | Coverage: 100% ✓
+**Phases:** 5 | **Requirements mapped:** 14/14 | Coverage: 100% ✓
 
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 1 | Scraper Engine | Fetch and parse river data with pluggable datasource adapter | SCRP-01, SCRP-02, SCRP-03, SCRP-04 | 4 |
 | 2 | Web UI | Responsive dashboard and river detail views | UI-01, UI-02, UI-03, UI-04 | 4 |
-| 3 | Favorites & Alerts | Personal rivers list with threshold-based alerts | FAV-01, FAV-02, FAV-03, ALRT-01, ALRT-02, ALRT-03 | 6 |
+| 3 | Favorites Engine | Personal river watchlist with localStorage persistence | FAV-01, FAV-02, PWA-01 | 3 |
+| 4 | Alerting Engine | Server-side threshold checking and alert evaluation | ALERT-01, ALERT-02, ARC-01, ARC-02 | 4 |
+| 5 | Alerts Page + UX | Dedicated alerts page with in-app notification surface | ALERT-03, ALERT-04 | 3 |
 
 ---
 
@@ -18,15 +20,15 @@
 **Plans:** 3 plans
 
 **Success Criteria:**
-1. System fetches data from hvorerdetvann.com and returns structured river objects
+1. System fetches data from NVE HydAPI and returns structured river objects
 2. Failed fetches trigger retry and don't crash the app
 3. A second datasource can be added by writing a new adapter (no core changes)
 4. River data includes name, current level, and five-level scale position
 
 **Plans:**
-- [x] 01-01-PLAN.md — Foundation: project scaffold, core types, adapter interface, config, test fixtures
-- [x] 01-02-PLAN.md — Building blocks: DataStore, typed event bus, HvorErDetVannAdapter
-- [x] 01-03-PLAN.md — Orchestration: ScraperEngine with retry/stale handling, entry point with cron
+- [x] 01-01 — Foundation: project scaffold, core types, adapter interface, config, test fixtures
+- [x] 01-02 — Building blocks: DataStore, typed event bus, NVE adapter
+- [x] 01-03 — Orchestration: ScraperEngine with retry/stale handling, entry point
 
 ### Phase 2: Web UI
 **Goal:** Responsive dashboard and river detail views.
@@ -40,21 +42,46 @@
 4. ✅ App shell architecture supports future native wrapping via Capacitor/WebView
 
 **Plans:**
-- [x] 02-01-PLAN.md — App Shell + Hardcoded Dashboard (Vite scaffold, shadcn components, RiverCard, StatusDot, dashboard with hardcoded data) `4551d01`
-- [x] 02-02-PLAN.md — Express Server + Live Data (server.ts, REST /api/rivers, SSE /api/events, useRivers hook, live data connection) `db76de8`
-- [x] 02-03-PLAN.md — River Detail Page (RiverDetailPage, DangerLevelSection, navigation wiring) `f3fd755`
-- [x] 02-04-PLAN.md — PWA + Mobile Polish (vite-plugin-pwa, safe-area CSS, 44px touch targets, responsive Sheet drawer) `8fc62d4`
+- [x] 02-01 — App Shell + Hardcoded Dashboard
+- [x] 02-02 — Express Server + Live Data (REST + SSE)
+- [x] 02-03 — River Detail Page
+- [x] 02-04 — PWA + Mobile Polish
 
-### Phase 3: Favorites & Alerts
-**Goal:** Personal rivers list with threshold-based alerts.
+### Phase 3: Favorites Engine
+**Goal:** Personal river watchlist with localStorage persistence.
 **Mode:** mvp
 
 **Success Criteria:**
-1. User can add/remove rivers from favorites with one click
-2. Favorites persist across page reloads
-3. User can set an alert threshold per river (tied to the five-level scale)
-4. In-app notification fires when a river crosses its threshold
-5. Active alerts are visible and dismissable
+1. User can favorite/unfavorite a river from the dashboard and detail page
+2. Favorites persist across page reloads and PWA app restarts
+3. Dashboard can filter to show only favorited rivers
+4. Favorites state survives service worker updates and cache clears
+
+**Requirements:** FAV-01, FAV-02, PWA-01
+
+### Phase 4: Alerting Engine
+**Goal:** Server-side threshold checking and alert evaluation.
+**Mode:** mvp
+
+**Success Criteria:**
+1. User can set alert threshold by danger level (1-5) per river
+2. User can set custom numeric threshold (m³/s) per river
+3. Alert evaluation runs during each scrape cycle
+4. Alert state is maintained in-memory and accessible via REST API
+
+**Requirements:** ALERT-01, ALERT-02, ARC-01, ARC-02
+
+### Phase 5: Alerts Page + UX
+**Goal:** Dedicated alerts page with in-app notification surface.
+**Mode:** mvp
+
+**Success Criteria:**
+1. Dedicated alerts page shows all triggered alerts with river name, level, and timestamp
+2. User can dismiss/acknowledge individual alerts
+3. Navigation shows alert count badge when active alerts exist
+4. River detail page shows whether an alert is configured
+
+**Requirements:** ALERT-03, ALERT-04
 
 ---
 
@@ -62,13 +89,13 @@
 
 ```
 Phase 1: Scraper Engine ───────────┐
-                                    ├──→ Phase 3: Favorites & Alerts
+                                   ├──→ Phase 3: Favorites Engine ──→ Phase 4: Alerting Engine ──→ Phase 5: Alerts Page + UX
 Phase 2: Web UI ───────────────────┘
 ```
 
-Phase 1 and Phase 2 can run in parallel (scraper backend + UI shell) since they share only the data model contract. Phase 3 depends on both.
+Phase 3 builds on the existing UI (Phase 2) and data layer (Phase 1). Phase 4 adds server-side alert evaluation to the scraper cycle. Phase 5 surfaces alerts in the UI.
 
 ---
 
 *Roadmap created: 2026-05-27*
-*Last updated: 2026-05-27 after Phase 2 execution*
+*Last updated: 2026-05-27 after v1.1 milestone definition*
