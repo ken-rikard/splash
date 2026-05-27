@@ -15,7 +15,9 @@ engine.register(new NveHydApiAdapter())
 const alertEngine = new AlertEngine()
 
 engine.eventBus.on('data-update', (rivers) => {
-  alertEngine.evaluate(rivers)
+  const { triggered, resolved } = alertEngine.evaluate(rivers)
+  for (const alert of triggered) { engine.eventBus.emit('alert-trigger', alert) }
+  for (const riverId of resolved) { engine.eventBus.emit('alert-resolve', { riverId }) }
   console.log(`Flow data updated: ${rivers.length} rivers`)
 })
 

@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { engine, alertEngine } from './src/index.js'
-import type { RiverData, AlertLevel } from './src/core/types.js'
+import type { RiverData, AlertLevel, ActiveAlert } from './src/core/types.js'
 
 const PORT = parseInt(process.env.PORT ?? '3000', 10)
 const app = express()
@@ -100,6 +100,16 @@ app.get('/api/alerts/active', (_req, res) => {
   res.json(alertEngine.getActiveAlerts())
 })
 
+// GET /api/alerts/config/:id — return single alert config by river ID
+app.get('/api/alerts/config/:id', (req, res) => {
+  const config = alertEngine.getConfig(req.params.id)
+  if (!config) {
+    res.status(404).json({ error: 'No alert config for this river' })
+    return
+  }
+  res.json(config)
+})
+
 // SSE: push real-time events
 app.get('/api/events', (req, res) => {
   res.writeHead(200, {
@@ -123,9 +133,19 @@ app.get('/api/events', (req, res) => {
     res.write(`event: stale\ndata: ${JSON.stringify({ since })}\n\n`)
   }
 
+  const onAlertTrigger = (alert: ActiveAlert) => {
+    res.write(`event: alert-trigger\ndata: ${JSON.stringify(alert)}\n\n`)
+  }
+
+  const onAlertResolve = (info: { riverId: string }) => {
+    res.write(`event: alert-resolve\ndata: ${JSON.stringify(info)}\n\n`)
+  }
+
   engine.eventBus.on('data-update', onUpdate)
   engine.eventBus.on('error', onError)
   engine.eventBus.on('stale', onStale)
+  engine.eventBus.on('alert-trigger', onAlertTrigger)
+  engine.eventBus.on('alert-resolve', onAlertResolve)
 
   // Heartbeat every 30s to keep connection alive
   const heartbeat = setInterval(() => {
@@ -137,6 +157,8 @@ app.get('/api/events', (req, res) => {
     engine.eventBus.removeListener('data-update', onUpdate as any)
     engine.eventBus.removeListener('error', onError as any)
     engine.eventBus.removeListener('stale', onStale as any)
+    engine.eventBus.removeListener('alert-trigger', onAlertTrigger as any)
+    engine.eventBus.removeListener('alert-resolve', onAlertResolve as any)
     clearInterval(heartbeat)
   })
 })
