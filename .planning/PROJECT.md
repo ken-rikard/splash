@@ -8,24 +8,36 @@ A web application that monitors river water levels by scraping data from hvorerd
 
 Reliable river flow monitoring with timely alerts when water levels cross critical thresholds.
 
+## Current Milestone: v1.1 Favorites & Alerts
+
+**Goal:** Let users build a personal river watchlist with threshold-based alerts surfaced on a dedicated page.
+
+**Target features:**
+- Favorite/unfavorite rivers from dashboard and detail page
+- Persist favorites via localStorage (works in PWA and Capacitor wrappers)
+- Per-river alert thresholds: level-based (1-5 scale) AND custom numeric
+- Dedicated alerts page with active and past alerts
+- In-app alert banner/indicator when a river crosses its threshold
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ **SCRAPE-01**: Fetch water level data from NVE HydAPI — Phase 1
+- ✓ **SCRAPE-02**: Parse and structure river data (name, current level, five-level scale) — Phase 1
+- ✓ **SCRAPE-03**: Support adding new datasources via a pluggable adapter pattern — Phase 1
+- ✓ **UI-01**: Responsive web UI that renders well on mobile — Phase 2
+- ✓ **UI-02**: Dashboard showing all rivers with current levels — Phase 2
+- ✓ **UI-03**: River detail page showing current level and danger level — Phase 2
 
 ### Active
 
-- [ ] **SCRAPE-01**: Fetch water level data from hvorerdetvann.com
-- [ ] **SCRAPE-02**: Parse and structure river data (name, current level, five-level scale)
-- [ ] **SCRAPE-03**: Support adding new datasources via a pluggable adapter pattern
 - [ ] **FAV-01**: User can add/remove rivers to a favorites list
-- [ ] **FAV-02**: Favorites persist across sessions
-- [ ] **ALERT-01**: User can set per-river alert thresholds mapped to the five-level system
-- [ ] **ALERT-02**: User receives in-app notification when threshold is crossed
-- [ ] **UI-01**: Responsive web UI that renders well on mobile
-- [ ] **UI-02**: Dashboard showing all favorited rivers with current levels
-- [ ] **UI-03**: River detail page showing current level, history, and alert config
+- [ ] **FAV-02**: Favorites persist across sessions via localStorage
+- [ ] **ALERT-01**: User can set per-river alert threshold by danger level (1-5)
+- [ ] **ALERT-02**: User can set per-river custom numeric threshold (m³/s)
+- [ ] **ALERT-03**: User receives in-app notification when threshold is crossed
+- [ ] **ALERT-04**: User can view dedicated alerts page with active and past alerts
 - [ ] **UI-04**: Architecture supports future native iOS/Android wrappers
 
 ### Out of Scope
@@ -76,4 +88,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-27 after initialization*
+*Last updated: 2026-05-27 after starting v1.1 milestone*
