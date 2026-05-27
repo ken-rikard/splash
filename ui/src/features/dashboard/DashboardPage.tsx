@@ -1,99 +1,13 @@
-import { useState, useEffect } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RiverCard } from './RiverCard'
 import EmptyState from './EmptyState'
-import type { RiverData } from '@/types'
-
-const SAMPLE_RIVERS: RiverData[] = [
-  {
-    id: 'nve-1',
-    name: 'Suldalslågen',
-    source: 'NVE',
-    stationId: '12.23.0',
-    currentLevel: 245.8,
-    unit: 'm³/s',
-    alertLevel: 2,
-    lastUpdated: new Date(),
-    status: 'ok',
-  },
-  {
-    id: 'nve-2',
-    name: 'Vosso',
-    source: 'NVE',
-    stationId: '62.5.0',
-    currentLevel: 89.2,
-    unit: 'm³/s',
-    alertLevel: 1,
-    lastUpdated: new Date(),
-    status: 'ok',
-  },
-  {
-    id: 'nve-3',
-    name: 'Gaula',
-    source: 'NVE',
-    stationId: '122.4.0',
-    currentLevel: 412.0,
-    unit: 'm³/s',
-    alertLevel: 3,
-    lastUpdated: new Date(),
-    status: 'ok',
-  },
-  {
-    id: 'nve-4',
-    name: 'Drammenselva',
-    source: 'NVE',
-    stationId: '7.1.0',
-    currentLevel: 678.5,
-    unit: 'm³/s',
-    alertLevel: 4,
-    lastUpdated: new Date(),
-    status: 'ok',
-  },
-  {
-    id: 'nve-5',
-    name: 'Glomma',
-    source: 'NVE',
-    stationId: '2.12.0',
-    currentLevel: 1200.0,
-    unit: 'm³/s',
-    alertLevel: 5,
-    lastUpdated: new Date(),
-    status: 'ok',
-  },
-  {
-    id: 'nve-6',
-    name: 'Nidelva',
-    source: 'NVE',
-    stationId: '123.1.0',
-    currentLevel: null,
-    unit: 'm³/s',
-    alertLevel: 1,
-    lastUpdated: new Date(),
-    status: 'stale',
-  },
-  {
-    id: 'nve-7',
-    name: 'Numedalslågen',
-    source: 'NVE',
-    stationId: '26.3.0',
-    currentLevel: 156.3,
-    unit: 'm³/s',
-    alertLevel: 2,
-    lastUpdated: new Date(),
-    status: 'ok',
-  },
-]
+import ErrorState from '@/components/shared/ErrorState'
+import { useRivers } from '@/hooks/useRivers'
 
 function DashboardPage() {
-  const [loading, setLoading] = useState(true)
-  const [rivers] = useState<RiverData[]>(SAMPLE_RIVERS)
+  const { rivers, status } = useRivers()
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800)
-    return () => clearTimeout(timer)
-  }, [])
-
-  if (loading) {
+  if (status === 'loading') {
     return (
       <div>
         <h1 className="text-2xl font-bold mb-6">River Levels</h1>
@@ -110,6 +24,15 @@ function DashboardPage() {
     )
   }
 
+  if (status === 'error') {
+    return (
+      <div>
+        <h1 className="text-2xl font-bold mb-6">River Levels</h1>
+        <ErrorState type="error" />
+      </div>
+    )
+  }
+
   if (rivers.length === 0) {
     return (
       <div>
@@ -122,6 +45,11 @@ function DashboardPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">River Levels</h1>
+      {status === 'stale' && (
+        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Data may be stale. Last updated time unknown.
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {rivers.map((river) => (
           <RiverCard key={river.id} river={river} />
