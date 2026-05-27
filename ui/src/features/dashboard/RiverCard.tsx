@@ -1,12 +1,23 @@
 import { StatusDot } from '@/components/shared/StatusIndicator'
 import { DangerLevelBar } from '@/components/shared/DangerLevelBar'
+import { FavoriteButton } from '@/components/shared/FavoriteButton'
 import { Link } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import type { RiverData } from '@/types'
 
 const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
 
-export function RiverCard({ river, index = 0 }: { river: RiverData; index?: number }) {
+export function RiverCard({
+  river,
+  index = 0,
+  isFavorite,
+  onToggleFavorite,
+}: {
+  river: RiverData
+  index?: number
+  isFavorite: boolean
+  onToggleFavorite: (id: string) => void
+}) {
   return (
     <div
       className="group rounded-lg border border-white/5 bg-surface p-5 hover:border-white/10 hover:bg-surface-elevated transition-all duration-300 opacity-0 animate-fade-in-up"
@@ -17,7 +28,12 @@ export function RiverCard({ river, index = 0 }: { river: RiverData; index?: numb
           <StatusDot level={river.alertLevel} status={river.status} />
           <p className="font-medium text-white truncate">{river.name}</p>
         </div>
-        <div className="text-right flex-shrink-0 ml-4">
+        <div className="flex items-center gap-2 flex-shrink-0 ml-4">
+          <FavoriteButton
+            riverId={river.id}
+            isFavorite={isFavorite}
+            onToggle={onToggleFavorite}
+          />
           <p className="text-2xl sm:text-3xl font-display font-bold text-white leading-none tracking-tight">
             {river.currentLevel ?? '—'}
           </p>
