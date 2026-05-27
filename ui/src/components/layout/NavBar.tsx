@@ -6,14 +6,17 @@ import {
   SheetContent,
   SheetTitle,
 } from '@/components/ui/sheet'
-
-const NAV_ITEMS = [
-  { to: '/', label: 'River Levels' },
-  { to: '#favorites', label: 'Favorites', disabled: true },
-  { to: '#settings', label: 'Settings', disabled: true },
-]
+import { useAlerts } from '@/hooks/useAlerts'
 
 function NavBar() {
+  const { count: alertCount } = useAlerts()
+
+  const NAV_ITEMS = [
+    { to: '/', label: 'River Levels' },
+    { to: '/alerts', label: `Alerts${alertCount > 0 ? ` (${alertCount})` : ''}` },
+    { to: '#favorites', label: 'Favorites', disabled: true },
+    { to: '#settings', label: 'Settings', disabled: true },
+  ]
   return (
     <header className="sticky top-0 z-50 border-b border-white/5 bg-deep-bg/80 backdrop-blur-lg">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 py-4">
