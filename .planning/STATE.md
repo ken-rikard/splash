@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Favorites & Alerts
 status: planning
-last_updated: "2026-05-27T22:22:56.773Z"
-last_activity: 2026-05-27
+last_updated: "2026-05-28T12:00:00.000Z"
+last_activity: 2026-05-28
 progress:
-  total_phases: 0
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_phases: 3
+  completed_phases: 2
+  total_plans: 6
+  completed_plans: 4
+  percent: 67
 ---
 
 # STATE.md — Splash
@@ -19,14 +19,14 @@ progress:
 
 **State:** Planning
 **Milestone:** v1.1 Favorites & Alerts
-**Last Activity:** 2026-05-27 — Milestone v1.1 started
+**Last Activity:** 2026-05-28 — Phase 3 plans created
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 3 — Favorites Engine (Plans: 03-01, 03-02)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-27 — Milestone v1.1 started
+Status: Planning complete
+Last activity: 2026-05-28 — Phase 3 plans created (2 plans, 2 waves)
 
 ## Project Reference
 
@@ -46,7 +46,7 @@ See: `.planning/PROJECT.md`
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 3: Favorites Engine | ○ Pending | 0/0 | 0% |
+| 3: Favorites Engine | ● Planned | 0/2 | 0% |
 | 4: Alerting Engine | ○ Pending | 0/0 | 0% |
 | 5: Alerts Page + UX | ○ Pending | 0/0 | 0% |
 
