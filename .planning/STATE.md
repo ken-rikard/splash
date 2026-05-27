@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: Favorites & Alerts
-status: executing
-last_updated: "2026-05-27T22:40:38.997Z"
-last_activity: 2026-05-27
+milestone_name: milestone
+status: planning
+last_updated: "2026-05-28T00:00:00.000Z"
+last_activity: 2026-05-28
 progress:
   total_phases: 5
-  completed_phases: 0
-  total_plans: 2
-  completed_plans: 0
-  percent: 0
+  completed_phases: 2
+  total_plans: 10
+  completed_plans: 6
+  percent: 60
 ---
 
 # STATE.md — Splash
@@ -19,21 +19,21 @@ progress:
 
 **State:** Planning
 **Milestone:** v1.1 Favorites & Alerts
-**Last Activity:** 2026-05-27
+**Last Activity:** 2026-05-28
 
 ## Current Position
 
-Phase: 3 — Favorites Engine (Plans: 03-01, 03-02)
-Plan: —
-Status: Ready to execute
-Last activity: 2026-05-27 -- Phase 3 planning complete
+Phase: 04 — PLANNING
+Plan: — (2 plans defined)
+Status: Phase 04 planning complete; ready for execution
+Last activity: 2026-05-28 — Phase 04 plans created
 
 ## Project Reference
 
 See: `.planning/PROJECT.md`
 
 **Core value:** Reliable river flow monitoring with timely alerts when water levels cross critical thresholds.
-**Current focus:** Favorites Engine — Phase 3
+**Current focus:** Phase 04 — Alerting Engine
 
 ## Completed Phases
 
@@ -41,13 +41,13 @@ See: `.planning/PROJECT.md`
 |-------|--------|-------|----------|
 | 1: Scraper Engine | ✅ Complete | 4/4 | 100% |
 | 2: Web UI | ✅ Complete | 4/4 | 100% |
+| 3: Favorites Engine | ✅ Complete | 2/2 | 100% |
 
 ## Planned Phases (v1.1)
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 3: Favorites Engine | ● Planned | 0/2 | 0% |
-| 4: Alerting Engine | ○ Pending | 0/0 | 0% |
+| 4: Alerting Engine | ● Planned | 0/2 | 0% |
 | 5: Alerts Page + UX | ○ Pending | 0/0 | 0% |
 
 ## Key Decisions (v1.0)
@@ -62,11 +62,5 @@ See: `.planning/PROJECT.md`
 None.
 
 ---
-*Last updated: 2026-05-27 after v1.1 milestone start*
 
-## Current Position
-
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-05-27 — Milestone v1.1 started
+*Last updated: 2026-05-28 after Phase 4 planning*
