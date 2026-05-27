@@ -88,6 +88,15 @@ describe('AlertEngine', () => {
       engine.evaluate([makeRiver('nve:1000', 5000, 5)])
       expect(engine.getActiveAlerts()).toHaveLength(1)
     })
+
+    it('evaluate() returns triggered array with new alert', () => {
+      const engine = new AlertEngine()
+      engine.setConfig({ riverId: 'nve:1000', type: 'level', level: 3, enabled: true })
+      const result = engine.evaluate([makeRiver('nve:1000', 500, 5)])
+      expect(result.triggered).toHaveLength(1)
+      expect(result.triggered[0].riverId).toBe('nve:1000')
+      expect(result.resolved).toHaveLength(0)
+    })
   })
 
   describe('evaluation — numeric-based', () => {
@@ -123,6 +132,25 @@ describe('AlertEngine', () => {
       engine.evaluate([makeRiver('nve:1000', 12, 1)])
       expect(engine.getActiveAlerts()).toHaveLength(0)
     })
+
+    it('evaluate() returns resolved array when alert drops below threshold', () => {
+      const engine = new AlertEngine()
+      engine.setConfig({ riverId: 'nve:1000', type: 'level', level: 3, enabled: true })
+      engine.evaluate([makeRiver('nve:1000', 200, 3)])
+      expect(engine.getActiveAlerts()).toHaveLength(1)
+      const result = engine.evaluate([makeRiver('nve:1000', 10, 1)])
+      expect(result.resolved).toHaveLength(1)
+      expect(result.resolved[0]).toBe('nve:1000')
+      expect(result.triggered).toHaveLength(0)
+    })
+
+    it('evaluate() returns empty arrays when no state change', () => {
+      const engine = new AlertEngine()
+      engine.setConfig({ riverId: 'nve:1000', type: 'level', level: 3, enabled: true })
+      const result = engine.evaluate([makeRiver('nve:1000', 10, 1)])
+      expect(result.triggered).toHaveLength(0)
+      expect(result.resolved).toHaveLength(0)
+    })
   })
 
   describe('edge cases', () => {
@@ -144,6 +172,16 @@ describe('AlertEngine', () => {
       engine.setConfig({ riverId: 'nve:1000', type: 'level', level: 1, enabled: false })
       engine.evaluate([makeRiver('nve:1000', 100, 3)])
       expect(engine.getActiveAlerts()).toHaveLength(0)
+    })
+
+    it('evaluate() returns resolved for disabled config that had active alert', () => {
+      const engine = new AlertEngine()
+      engine.setConfig({ riverId: 'nve:1000', type: 'level', level: 1, enabled: true })
+      engine.evaluate([makeRiver('nve:1000', 100, 3)])
+      expect(engine.getActiveAlerts()).toHaveLength(1)
+      engine.setConfig({ riverId: 'nve:1000', type: 'level', level: 1, enabled: false })
+      const result = engine.evaluate([makeRiver('nve:1000', 100, 3)])
+      expect(result.resolved).toContain('nve:1000')
     })
 
     it('removeConfig cleans up active alert', () => {

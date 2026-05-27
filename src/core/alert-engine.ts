@@ -8,8 +8,8 @@ export class AlertEngine {
 
   setConfig(config: AlertConfig): AlertConfig {
     this.configs.set(config.riverId, config)
-    // If the config is disabled or has inactive threshold, clean up any active alert
-    if (!config.enabled || this.isConfigInactive(config)) {
+    // Clean up configs with no threshold set — evaluate() can't check these
+    if (this.isConfigInactive(config)) {
       this.activeAlerts.delete(config.riverId)
     }
     return config
@@ -41,12 +41,17 @@ export class AlertEngine {
 
   // ── Evaluation ──
 
-  evaluate(rivers: RiverData[]): void {
+  evaluate(rivers: RiverData[]): { triggered: ActiveAlert[]; resolved: string[] } {
+    const triggered: ActiveAlert[] = []
+    const resolved: string[] = []
+
     for (const river of rivers) {
       const config = this.configs.get(river.id)
       if (!config || !config.enabled) {
-        // No config or disabled — clean up any lingering active alert
-        this.activeAlerts.delete(river.id)
+        if (this.activeAlerts.has(river.id)) {
+          this.activeAlerts.delete(river.id)
+          resolved.push(river.id)
+        }
         continue
       }
 
@@ -57,8 +62,7 @@ export class AlertEngine {
       const hasActive = this.activeAlerts.has(river.id)
 
       if (isTriggered && !hasActive) {
-        // New alert — crossed threshold
-        this.activeAlerts.set(river.id, {
+        const alert: ActiveAlert = {
           riverId: river.id,
           config,
           threshold: this.resolveThreshold(config),
@@ -66,14 +70,18 @@ export class AlertEngine {
           alertLevel: river.alertLevel,
           triggeredAt: new Date(),
           snapshot: { ...river },
-        })
+        }
+        this.activeAlerts.set(river.id, alert)
+        triggered.push(alert)
       } else if (!isTriggered && hasActive) {
-        // Alert resolved — dropped below threshold
         this.activeAlerts.delete(river.id)
+        resolved.push(river.id)
       }
       // isTriggered && hasActive → already active, no update needed
       // !isTriggered && !hasActive → nothing to do
     }
+
+    return { triggered, resolved }
   }
 
   // ── Private Helpers ──

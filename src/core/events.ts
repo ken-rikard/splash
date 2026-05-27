@@ -1,11 +1,13 @@
 import { EventEmitter } from 'node:events'
-import type { RiverData, ScraperStatus } from './types.js'
+import type { RiverData, ScraperStatus, ActiveAlert } from './types.js'
 
 export interface ScraperEventMap {
   'data-update': (rivers: RiverData[]) => void
   'error': (error: Error) => void
   'stale': (since: Date) => void
   'status-change': (status: ScraperStatus) => void
+  'alert-trigger': (alert: ActiveAlert) => void
+  'alert-resolve': (info: { riverId: string }) => void
 }
 
 export class ScraperEventBus {
