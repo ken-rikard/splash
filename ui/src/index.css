@@ -180,3 +180,19 @@ body::after {
   min-height: 44px;
   min-width: 44px;
 }
+
+@keyframes fav-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.animate-fav-pop {
+  animation: fav-pop 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fav-pop {
+    animation: none;
+  }
+}
