@@ -620,22 +620,13 @@ engine.scrapeAll();
 | A2 | Native `fetch` is reliable enough for the scraper's needs | Standard Stack | Low — fetch is production-grade in Node 26. If more advanced features are needed (timeout, streaming), add a thin wrapper. |
 | A3 | `p-retry`'s default timeout handling is adequate | Retry Pattern | Medium — p-retry doesn't have built-in per-attempt timeout. If API is slow, add `AbortController.timeout()` wrapper around fetch. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Should we drop `cheerio` from the dependency list?**
-   - What we know: The site has a JSON API. No HTML parsing is needed.
-   - What's unclear: Whether the original D-02 decision was a firm locked choice or conditional on the site structure.
-   - Recommendation: Flag to planner/discuss-phase. This research strongly recommends dropping both node-fetch and cheerio in favor of native fetch + direct JSON parsing.
+1. **Should we drop `cheerio` from the dependency list?** — RESOLVED: Yes. D-02 has been updated. Plans use native fetch with direct JSON parsing, no HTML dependencies.
 
-2. **Schema validation library (zod vs TypeScript-only)?**
-   - What we know: TypeScript type guards provide compile-time safety but no runtime validation.
-   - What's unclear: Whether the API response format needs runtime validation.
-   - Recommendation: Skip zod for Phase 1. Add runtime validation with type guards. Add zod later if the API proves unstable.
+2. **Schema validation library (zod vs TypeScript-only)?** — RESOLVED: Skip zod. Plans use TypeScript types and runtime type guards. Schema validation deferred until API instability is observed.
 
-3. **Config file format (JSON / YAML / .env / TS)?**
-   - What we know: D-04 says "configurable cron expression" and the agent's discretion says "env var vs config file deferred."
-   - What's unclear: What format the planner will choose.
-   - Recommendation: Use environment variables with defaults (shown in code examples). Simple, fits 12-factor app pattern. The config.ts file can be extended to read from a config file in the future.
+3. **Config file format (JSON / YAML / .env / TS)?** — RESOLVED: Env vars with defaults. Plans implement config.ts reading process.env with documented defaults. Extensible to file-based config in the future.
 
 ## Environment Availability
 

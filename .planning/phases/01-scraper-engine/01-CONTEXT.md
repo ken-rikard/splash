@@ -19,8 +19,8 @@ Fetch water level data from hvorerdetvann.com, parse it into structured river ob
 - **D-01:** TypeScript on Node.js — aligns with web-first stack, Capacitor mobile path, consistent with UI and alert phases. No build-tool concessions needed for scraping.
 
 ### Scraping Approach
-- **D-02:** `node-fetch` for HTTP + `cheerio` for HTML parsing — lightweight, well-understood, adequate for table-structured river data on hvorerdetvann.com. No headless browser needed (the site returns server-rendered HTML).
-- **D-03:** The scraper targets the table structure of hvorerdetvann.com's river listing page. Future datasource adapters may use different parsers.
+- **D-02:** Native `fetch` (Node.js 26 built-in, undici 8.x) for HTTP — the site is a Solid.js SPA with a REST API at `/api/sections`, not server-rendered HTML. No HTTP client library needed. No HTML parser needed (JSON responses).
+- **D-03:** The scraper targets the JSON API structure of hvorerdetvann.com's `/api/sections` endpoint, which returns river sections with `name`, `last_flow.flow`/`last_flow.meters`, `zone` (dry/low/medium/high/very_high), and `limits` array defining 5-level boundaries. Future datasource adapters may use different endpoints or formats.
 
 ### Scheduling
 - **D-04:** `node-cron` with configurable cron expression (default: every 15 minutes). No external scheduler dependency. Phase 1 scrapes on schedule; the schedule config flows from environment/config file.
@@ -37,6 +37,7 @@ Fetch water level data from hvorerdetvann.com, parse it into structured river ob
   - `parse(raw: unknown): RiverData[]` — transforms raw input into typed river objects
 - **D-10:** Adapters are registered via a `ScraperEngine.register(adapter)` call. The engine iterates all registered adapters and emits a consolidated resultset.
 - **D-11:** The adapter contract returns typed `RiverData[]` — no raw HTML/JSON leaks past the parser boundary.
+  - **Deviation (research-recommended):** `parse()` is internalized within each adapter implementation rather than on the interface. The `DatasourceAdapter` interface exposes only `fetch(): Promise<RiverData[]>`. Each adapter internally transforms its source format. This simplifies the contract while maintaining strict typing boundaries. If a future use case requires shared parsing logic, `parse()` can be promoted to the interface at that point.
 
 ### Data Model
 - **D-12:** Core `RiverData` interface:
