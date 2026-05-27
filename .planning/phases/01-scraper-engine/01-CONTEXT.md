@@ -6,10 +6,16 @@
 <domain>
 ## Phase Boundary
 
-Fetch water level data from hvorerdetvann.com, parse it into structured river objects with five-level scale position, handle scrape failures with retry and stale-data fallback, and provide a pluggable datasource adapter system so new sources can be added without touching core logic.
+**Flow data** — fetch discharge (m³/s) from NVE HydAPI, structure into typed river objects with alert level, handle failures with retry and stale-data fallback. NVE HydAPI is the sole flow datasource (free REST API, ~1800 stations, requires free API key).
+
+**Metadata import** — scrape river metadata (kayak/rafting grades, descriptions, guides) from nokken.net and hvorerdetvann.com as a one-time bootstrap operation. Both sites carry this metadata alongside NVE-backed flow data.
+
+**River registry** — persisted list of known rivers with metadata. Deduplicated by NVE station ID across both sites.
+
+**Admin page** — Phase 2 UI for viewing, editing, adding, and deleting river entries in the registry.
 
 **Requirements:** SCRP-01 (fetch), SCRP-02 (parse), SCRP-03 (error handling), SCRP-04 (adapter pattern)
-**Success criteria:** 4 (fetch + parse, error resilience, pluggable adapter, structured output)
+**Success criteria:** 5 (flow fetch + parse, metadata import, river registry + persistence, error resilience, pluggable adapter)
 </domain>
 
 <decisions>
@@ -18,9 +24,17 @@ Fetch water level data from hvorerdetvann.com, parse it into structured river ob
 ### Language & Runtime
 - **D-01:** TypeScript on Node.js — aligns with web-first stack, Capacitor mobile path, consistent with UI and alert phases. No build-tool concessions needed for scraping.
 
-### Scraping Approach
-- **D-02:** Native `fetch` (Node.js 26 built-in, undici 8.x) for HTTP — the site is a Solid.js SPA with a REST API at `/api/sections`, not server-rendered HTML. No HTTP client library needed. No HTML parser needed (JSON responses).
-- **D-03:** The scraper targets the JSON API structure of hvorerdetvann.com's `/api/sections` endpoint, which returns river sections with `name`, `last_flow.flow`/`last_flow.meters`, `zone` (dry/low/medium/high/very_high), and `limits` array defining 5-level boundaries. Future datasource adapters may use different endpoints or formats.
+### Scraping Approach — Flow Data
+- **D-02:** Native `fetch` (Node.js 26 built-in, undici 8.x) for HTTP — NVE HydAPI and HvorErDetVann API return JSON. nokken.net may need cheerio or XHR reverse-engineering (deferred to research).
+- **D-03:** **NVE HydAPI** (`/api/v1/Observations`) is the **sole flow data source**. Request discharge (parameter 1000) at daily resolution (resolutionTime 1440) for known station IDs from the river registry.
+- **D-03a:** NVE HydAPI parameter codes: **1000=water stage (m)**, **1001=discharge (m³/s)** — ⚠️ use Parameter=1001 for flow data. 1003=water temperature (°C). Resolution: 0=raw, 60=hourly, 1440=daily. (Corrected 2026-05-27: earlier version had 1000/1001 swapped.)
+- **D-03b:** NVE HydAPI requires an API key via the `X-API-Key` header. Registration is free at NVE's hydrology API portal. The key is configured via environment variable `NVE_API_KEY`. If missing, the NVE adapter skips with a logged warning.
+
+### Scraping Approach — Metadata Import
+- **D-03d:** **HvorErDetVann** is scraped for metadata (not flow). Its `/api/sections` JSON returns river names, zone levels, and limits — used to discover rivers and their alert-level structure.
+- **D-03e:** **nokken.net** is scraped for kayak/rafting metadata: river grades, descriptions, guides, and difficulty. The site is an SPA — scraping approach (cheerio vs XHR reverse-engineering) is deferred to research.
+- **D-03f:** Metadata import is a **one-time bootstrap CLI** (not a cron task). It auto-discovers all rivers from both sites, deduplicates by NVE station ID, and writes the river registry to `data/rivers.json`.
+- **D-03g:** No metadata adapter implements `DatasourceAdapter` — metadata scraping uses a separate `MetadataImporter` interface since it's a one-shot operation with different semantics (discovery, enrichment, merge).
 
 ### Scheduling
 - **D-04:** `node-cron` with configurable cron expression (default: every 15 minutes). No external scheduler dependency. Phase 1 scrapes on schedule; the schedule config flows from environment/config file.
@@ -39,22 +53,46 @@ Fetch water level data from hvorerdetvann.com, parse it into structured river ob
 - **D-11:** The adapter contract returns typed `RiverData[]` — no raw HTML/JSON leaks past the parser boundary.
   - **Deviation (research-recommended):** `parse()` is internalized within each adapter implementation rather than on the interface. The `DatasourceAdapter` interface exposes only `fetch(): Promise<RiverData[]>`. Each adapter internally transforms its source format. This simplifies the contract while maintaining strict typing boundaries. If a future use case requires shared parsing logic, `parse()` can be promoted to the interface at that point.
 
-### Data Model
-- **D-12:** Core `RiverData` interface:
-  - `id: string` (unique, source-prefixed)
+### Data Model — Flow Data
+- **D-12:** Core `RiverData` interface (flow observations):
+  - `id: string` (unique, e.g. "nve:1000.1000.0")
   - `name: string` (human-readable river name)
-  - `source: string` (datasource identifier, e.g. "hvorerdetvann")
-  - `currentLevel: number | null` (water level in source units)
+  - `source: string` (always "nve" for flow data)
+  - `stationId: string` (NVE station ID)
+  - `currentLevel: number | null` (discharge in m³/s)
+  - `unit: string` (always "m³/s")
   - `alertLevel: number` (1-5 five-level scale position)
   - `lastUpdated: Date`
   - `status: 'ok' | 'stale' | 'error'`
   - `error?: string` (human-readable error if status is 'error')
-- **D-13:** An in-memory `DataStore` holds the latest RiverData for each river, keyed by id. Phase 1 does NOT persist to disk — Phase 2's UI reads from the store.
-- **D-14:** The engine emits events (`ScraperEvents`) when data updates or errors occur, enabling loose coupling with the UI layer in Phase 2.
+
+### Data Model — River Registry
+- **D-13:** `RiverEntry` interface (persisted river metadata):
+  - `id: string` (unique, e.g. "nve:1000")
+  - `stationId: string` (NVE station ID)
+  - `name: string` (human-readable river name)
+  - `alternateNames: string[]` (names from other sources)
+  - `grade: string` (kayak/rafting difficulty grade, e.g. "III-IV")
+  - `description: string` (river description)
+  - `guideUrl?: string` (link to guide/crucial info)
+  - `dangerLevels: number[]` (5-level thresholds in m³/s)
+  - `enabled: boolean` (whether to monitor this river)
+  - `sources: string[]` (which metadata sources contributed, e.g. ["nokken", "hvorerdetvann"])
+- **D-14:** The river registry is persisted as JSON at `data/rivers.json`. Read at startup by the flow engine and the admin page.
+- **D-15:** An in-memory `FlowStore` holds the latest RiverData (flow) for each river, keyed by id. No disk persistence for flow data — only the river registry persists.
+
+### Event System
+- **D-16:** The engine emits events (`ScraperEvents`) when flow data updates or errors occur, enabling loose coupling with the UI layer in Phase 2.
+
+### Admin Page (Phase 1.5 / Phase 2 prework)
+- **D-17:** An admin page (web UI) allows viewing, editing, adding, and deleting river entries.
+- **D-18:** The admin page reads/writes `data/rivers.json` directly. Adds new entries with NVE station ID, name, grade, description, guide URL, danger levels, and enabled state.
+- **D-19:** The admin frontend is a separate SPA served by the same Node.js server. Framework choice deferred (likely same as Phase 2 UI framework).
 
 ### the agent's Discretion
 - Schedule configuration format (env var vs config file) and project structure (monorepo vs flat) are deferred to planning — clear conventions will emerge.
 - Testing framework and test patterns are standard TypeScript (vitest) — no special decisions needed here.
+- Metadata scraping approach (cheerio vs XHR reverse-engineering) for nokken.net is deferred to Plan 01-04 research.
 </decisions>
 
 <canonical_refs>
@@ -70,7 +108,11 @@ Fetch water level data from hvorerdetvann.com, parse it into structured river ob
 - `.planning/PROJECT.md` — Project scope, constraints, and key decisions (scraper-first, adapter pattern, no-auth)
 - `.planning/STATE.md` — Current project state
 
-No external specs — requirements fully captured in decisions above.
+### External Specs
+- **NVE HydAPI Swagger:** `https://hydapi.nve.no/swagger/v1/swagger.json` — OpenAPI spec for all endpoints (Stations, Observations, Series, Parameters, Percentiles, Ratingcurves)
+- **NVE HydAPI base URL:** `https://hydapi.nve.no/api/v1/`
+- **NVE HydAPI auth:** `X-API-Key` header, free registration at https://hydapi.nve.no/User/Account/Register
+- **NVE HydAPI license:** NLOD 2.0 / CC BY 3.0 — free to use with attribution
 </canonical_refs>
 
 <code_context>
@@ -83,9 +125,10 @@ No external specs — requirements fully captured in decisions above.
 - No patterns established yet; Phase 1 establishes the patterns (adapter interface, typed data model, event-driven store) that subsequent phases build on.
 
 ### Integration Points
-- Phase 1 produces a typed `RiverData` output contract and event emitter that Phase 2 (Web UI) consumes.
-- The `DatasourceAdapter` interface is the extension point for future datasources (Phase 3+ or v2).
-- No persistence layer — Phase 1 keeps state in memory for the UI layer to consume.
+- Phase 1 produces: (a) flow data via `FlowStore` + events, (b) river registry at `data/rivers.json`, (c) metadata import CLI.
+- Phase 2 (Web UI) consumes flow data from the event bus and river registry from `data/rivers.json`.
+- Admin page (Phase 1.5) reads/writes `data/rivers.json` and reads flow status from the engine.
+- The `DatasourceAdapter` interface is the extension point for future flow datasources (Phase 3+ or v2).
 </code_context>
 
 <specifics>
@@ -99,9 +142,10 @@ No specific requirements — open to standard approaches within the decisions ab
 <deferred>
 ## Deferred Ideas
 
-- **Custom datasource UI** (v2) — Letting users add custom datasource URLs from the UI is explicitly out of scope for v1. Phase 1 datasources are configured in code via the adapter.
-- **Historical data storage** (v2) — Phase 1 only keeps the latest scrape in memory. Storing historical levels for trend viewing is deferred.
+- **Custom datasource UI** (v2) — Letting users add custom datasource URLs from the UI is explicitly out of scope for v1.
+- **Historical flow storage** (v2) — Flow data is in-memory only. Storing historical levels for trend viewing is deferred.
 - **Push notifications** (v2+) — Requires native mobile wrapper. Phase 3 covers in-app alerts only.
+- **Automated re-scrape of metadata** — Metadata import is one-time bootstrap at this phase. Periodic re-scrape to catch updates is deferred.
 
 None — discussion stayed within phase scope.
 </deferred>

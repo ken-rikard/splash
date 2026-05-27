@@ -1,0 +1,2722 @@
+[
+  {
+    "id": "nve:6.9.0",
+    "stationId": "6.9.0",
+    "name": "Akerselva",
+    "alternateNames": [
+      "Play spot"
+    ],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      10,
+      10,
+      15,
+      20,
+      40
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.209.0",
+    "stationId": "12.209.0",
+    "name": "Åsli",
+    "alternateNames": [
+      "Urula",
+      "Aurdøla",
+      "Fossbrøyta"
+    ],
+    "grade": "V−",
+    "description": "<a href=\"https://www.strava.com/segments/33079081\">Strava Segment</a> (5,36km @ 1,8%)",
+    "dangerLevels": [
+      10,
+      15,
+      30,
+      40,
+      80
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.439.0",
+    "stationId": "2.439.0",
+    "name": "Åsta",
+    "alternateNames": [],
+    "grade": "III+",
+    "description": "",
+    "dangerLevels": [
+      20,
+      20,
+      40,
+      40,
+      80
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.32.0",
+    "stationId": "2.32.0",
+    "name": "Atna (midtre)",
+    "alternateNames": [
+      "Lower I",
+      "Lower II",
+      "Setninga"
+    ],
+    "grade": "III−",
+    "description": "",
+    "dangerLevels": [
+      15,
+      20,
+      35,
+      70,
+      140
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.479.0",
+    "stationId": "2.479.0",
+    "name": "Atna (øvre)",
+    "alternateNames": [
+      "Dørålen"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      5,
+      6,
+      7,
+      7.5,
+      15
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:16.128.0",
+    "stationId": "16.128.0",
+    "name": "Austbygd (nedre)",
+    "alternateNames": [
+      "Austbygd (øvre)",
+      "Gøyst",
+      "Upper",
+      "Lower",
+      "Mår"
+    ],
+    "grade": "IV−",
+    "description": "<a href=\"https://www.strava.com/segments/34395260\">Strava Segment</a> (3,3km @ 4,1%)",
+    "dangerLevels": [
+      35,
+      35,
+      50,
+      50,
+      100
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:27.25.0",
+    "stationId": "27.25.0",
+    "name": "Bjerkreim (nedre)",
+    "alternateNames": [
+      "Bjerkreim (øvre)"
+    ],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      15,
+      30,
+      70,
+      110,
+      220
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:16.51.0",
+    "stationId": "16.51.0",
+    "name": "Bøelva",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      10,
+      20,
+      40,
+      80,
+      160
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.268.0",
+    "stationId": "2.268.0",
+    "name": "Bøvra (nedre)",
+    "alternateNames": [
+      "Lower"
+    ],
+    "grade": "IV−",
+    "description": "",
+    "dangerLevels": [
+      20,
+      20,
+      45,
+      100,
+      200
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.290.0",
+    "stationId": "2.290.0",
+    "name": "Bøvra (øvre)",
+    "alternateNames": [
+      "Upper",
+      "Galdesand gorge"
+    ],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      10,
+      10,
+      20,
+      30,
+      60
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:122.14.0",
+    "stationId": "122.14.0",
+    "name": "Bua (Juvet)",
+    "alternateNames": [
+      "Canyon",
+      "Canyon Lower",
+      "Ena"
+    ],
+    "grade": "IV",
+    "description": "<a href=\"https://www.strava.com/segments/24566392\">Strava Segment</a> (5,84km @ 1,9%)<br>Arv segment - reell take-out er buabrua etter 12km.",
+    "dangerLevels": [
+      10,
+      10,
+      20,
+      25,
+      50
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:98.4.0",
+    "stationId": "98.4.0",
+    "name": "Bygdelva",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      2,
+      4,
+      8,
+      12,
+      24
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:15.79.0",
+    "stationId": "15.79.0",
+    "name": "Dagali",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      15,
+      21,
+      50,
+      150,
+      300
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:109.20.0",
+    "stationId": "109.20.0",
+    "name": "Driva v/Gråura",
+    "alternateNames": [
+      "Oppdal",
+      "Gråura"
+    ],
+    "grade": "III",
+    "description": "<a href=\"https://www.strava.com/segments/31746061\">Strava Segment</a> (13,8km @ 1,1%)",
+    "dangerLevels": [
+      9.5,
+      25,
+      46,
+      100,
+      200
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:109.9.0",
+    "stationId": "109.9.0",
+    "name": "Driva v/Risefoss",
+    "alternateNames": [
+      "Kongsvoll"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      12,
+      12,
+      20,
+      20,
+      40
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.178.0",
+    "stationId": "12.178.0",
+    "name": "Eggedøla",
+    "alternateNames": [
+      "Nedalselva"
+    ],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      5,
+      10,
+      15,
+      25,
+      50
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.70.0",
+    "stationId": "12.70.0",
+    "name": "Etna (Bruflat)",
+    "alternateNames": [
+      "Etna (Midtre)",
+      "Etna (nedre)",
+      "Etna (øvre)",
+      "Upper",
+      "Lower",
+      "Høljarast",
+      "Middle",
+      "Rotvolla",
+      "Synna"
+    ],
+    "grade": "IV−",
+    "description": "<a href=\"https://www.strava.com/segments/24566683\">Strava Segment</a> (6,25km @ 1,2%)",
+    "dangerLevels": [
+      14,
+      15,
+      40,
+      45,
+      90
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:21.69.0",
+    "stationId": "21.69.0",
+    "name": "Evje (syrteitfossane)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "Vet ikke vannføringsnivåer.",
+    "dangerLevels": [
+      1000,
+      1000,
+      1000,
+      1000,
+      2000
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.284.0",
+    "stationId": "2.284.0",
+    "name": "Finna",
+    "alternateNames": [
+      "Skjerva"
+    ],
+    "grade": "IV",
+    "description": "<a href=\"https://www.strava.com/segments/15642625\">Strava Segment</a> (8.6km @ 2,4%)",
+    "dangerLevels": [
+      12,
+      20,
+      30,
+      35,
+      70
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.129.0",
+    "stationId": "2.129.0",
+    "name": "Folla",
+    "alternateNames": [
+      "Upper",
+      "Lower"
+    ],
+    "grade": "IV−",
+    "description": "",
+    "dangerLevels": [
+      15,
+      25,
+      50,
+      50,
+      100
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:124.2.0",
+    "stationId": "124.2.0",
+    "name": "Forra",
+    "alternateNames": [
+      "Vigda"
+    ],
+    "grade": "V−",
+    "description": "",
+    "dangerLevels": [
+      8,
+      8,
+      14,
+      20,
+      40
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.1151.0",
+    "stationId": "2.1151.0",
+    "name": "Frya",
+    "alternateNames": [
+      "Breida",
+      "Upper",
+      "Lower"
+    ],
+    "grade": "III+",
+    "description": "<a href=\"https://www.strava.com/segments/24466594\">Strava Segment</a> (4,7km @ 2.1%) <br>Warning: Gauge is *upsteam* of confluence with Storeldåa (very significant tributary), so doesn't represent actual flows in Frya canyon well.",
+    "dangerLevels": [
+      3,
+      5,
+      14,
+      18,
+      36
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:122.9.0",
+    "stationId": "122.9.0",
+    "name": "Gaula (Gaulfoss)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      20,
+      40,
+      140,
+      160,
+      320
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.28.0",
+    "stationId": "2.28.0",
+    "name": "Gausa",
+    "alternateNames": [],
+    "grade": "",
+    "description": "<a href=https://www.strava.com/segments/31970144>Strava Segment</a> (5,6km @ 0,7%)",
+    "dangerLevels": [
+      20,
+      30,
+      60,
+      300,
+      600
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:30.8.0",
+    "stationId": "30.8.0",
+    "name": "Gilja (nedre)",
+    "alternateNames": [
+      "Gilja (øvre)",
+      "Hunnedalen_nedre",
+      "Hunnedalen (øvre)"
+    ],
+    "grade": "",
+    "description": "Vet ikke grenser.\r\nVisstnok grad 3-4.",
+    "dangerLevels": [
+      1000,
+      1000,
+      1000,
+      1000,
+      2000
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:163.5.0",
+    "stationId": "163.5.0",
+    "name": "Graddiselva",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      15,
+      20,
+      30,
+      40,
+      80
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:151.28.0",
+    "stationId": "151.28.0",
+    "name": "Granesurfen",
+    "alternateNames": [],
+    "grade": "",
+    "description": "Works best between 250 and 300.",
+    "dangerLevels": [
+      250,
+      250,
+      300,
+      300,
+      600
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:15.171.0",
+    "stationId": "15.171.0",
+    "name": "Grettefoss",
+    "alternateNames": [
+      "Kloppfoss",
+      "Nybrufossen"
+    ],
+    "grade": "",
+    "description": "N.B. Active construction site ! Please respect current paddling ban to ensure optimal future wave. (Ref kongsberg Padleklubb 2025).",
+    "dangerLevels": [
+      45,
+      50,
+      80,
+      100,
+      200
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:27.15.0",
+    "stationId": "27.15.0",
+    "name": "Grøttedal",
+    "alternateNames": [
+      "Malmei"
+    ],
+    "grade": "",
+    "description": "Vet ikke grenser.\r\nVisstnok grad 3-4.",
+    "dangerLevels": [
+      1000,
+      1000,
+      1000,
+      1000,
+      2000
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:27.20.0",
+    "stationId": "27.20.0",
+    "name": "Gya",
+    "alternateNames": [],
+    "grade": "",
+    "description": "Vet ikke genser.\r\nVisstnok grad 3-4.",
+    "dangerLevels": [
+      1000,
+      1000,
+      1000,
+      1000,
+      2000
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.461.0",
+    "stationId": "2.461.0",
+    "name": "Hakadalselva",
+    "alternateNames": [],
+    "grade": "II+",
+    "description": "",
+    "dangerLevels": [
+      10,
+      12,
+      20,
+      20,
+      40
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.171.0",
+    "stationId": "12.171.0",
+    "name": "Hølera",
+    "alternateNames": [
+      "Bøva",
+      "Hølerajuvet"
+    ],
+    "grade": "IV−",
+    "description": "<a href=https://www.strava.com/segments/37756244>Strava Segment</a> (6,1km @ 1.5%)",
+    "dangerLevels": [
+      6,
+      7,
+      10,
+      12,
+      24
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:89.1.0",
+    "stationId": "89.1.0",
+    "name": "Horndøla",
+    "alternateNames": [
+      "Langedalselva"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      20,
+      20,
+      30,
+      30,
+      60
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.145.0",
+    "stationId": "2.145.0",
+    "name": "Hundefossen (Lågen)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "<a href=\"https://www.strava.com/segments/17867202\">Strava Segment</a> (5,4km @ 0,5%)",
+    "dangerLevels": [
+      100,
+      100,
+      600,
+      800,
+      1600
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.578.0",
+    "stationId": "2.578.0",
+    "name": "Imsa",
+    "alternateNames": [
+      "Upper",
+      "Lower"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      6,
+      8,
+      16,
+      25,
+      50
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:15.21.0",
+    "stationId": "15.21.0",
+    "name": "Jondalselva (nedre)",
+    "alternateNames": [
+      "Saggrenda",
+      "Skirva",
+      "Hjuksa",
+      "Jondalselva",
+      "Kopperbergselva"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      10,
+      13,
+      16,
+      20,
+      40
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.303.0",
+    "stationId": "2.303.0",
+    "name": "Jori (nedre)",
+    "alternateNames": [
+      "jori (øvre)",
+      "Grøna",
+      "Lower"
+    ],
+    "grade": "V",
+    "description": "<a href=\"https://www.strava.com/segments/31746105\">Strava Segment</a> (10,1km @ 2.2%)",
+    "dangerLevels": [
+      8,
+      8,
+      14,
+      30,
+      60
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:76.10.0",
+    "stationId": "76.10.0",
+    "name": "Jostedøla (øvre)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      15,
+      20,
+      40,
+      55,
+      110
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.280.0",
+    "stationId": "2.280.0",
+    "name": "Leira",
+    "alternateNames": [],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      15,
+      20,
+      30,
+      45,
+      90
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:8.2.0",
+    "stationId": "8.2.0",
+    "name": "Lomma",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      10,
+      15,
+      40,
+      80,
+      160
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:7.29.0",
+    "stationId": "7.29.0",
+    "name": "Lysaker'n",
+    "alternateNames": [
+      "Lysakerelva"
+    ],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      8,
+      12,
+      16,
+      25,
+      50
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.15.0",
+    "stationId": "62.15.0",
+    "name": "Marinejuvet",
+    "alternateNames": [
+      "Raundalselva (play run)",
+      "Raundalselvi (rafting)",
+      "Upper (Mjølfjell)",
+      "Skytebanen",
+      "Lower (Meringi-Tundal)"
+    ],
+    "grade": "III",
+    "description": "Don't trust my limits🤷",
+    "dangerLevels": [
+      9,
+      11,
+      50,
+      100,
+      200
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.267.0",
+    "stationId": "2.267.0",
+    "name": "Mistra",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "<a href=\"https://www.strava.com/segments/31830307\">Strava Segment</a> (5,3km @ 2,5%)",
+    "dangerLevels": [
+      10,
+      14,
+      50,
+      60,
+      120
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.215.0",
+    "stationId": "12.215.0",
+    "name": "Mørkedøla",
+    "alternateNames": [
+      "Smeddalselvi"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      8,
+      13,
+      20,
+      20,
+      40
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:100.1.0",
+    "stationId": "100.1.0",
+    "name": "Myklebustelva",
+    "alternateNames": [
+      "Valldøla (midtre)",
+      "Valldøla (nedre)",
+      "Valldøla (øvre)",
+      "Upper",
+      "Lower",
+      "Middle"
+    ],
+    "grade": "IV+",
+    "description": "",
+    "dangerLevels": [
+      18,
+      18,
+      24,
+      24,
+      48
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.10.0",
+    "stationId": "62.10.0",
+    "name": "Myrkdalselvi (nedre)",
+    "alternateNames": [
+      "Myrkdalselvi (øvre)",
+      "Strandaelvi (nedre)",
+      "Strandaelvi (øvre)",
+      "Jordal",
+      "Upper",
+      "Lower"
+    ],
+    "grade": "IV",
+    "description": "Don't know the limits",
+    "dangerLevels": [
+      10,
+      15,
+      30,
+      60,
+      120
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:27.16.0",
+    "stationId": "27.16.0",
+    "name": "Ørsdalen",
+    "alternateNames": [],
+    "grade": "",
+    "description": "Vet ikke genser.\r\nVisstnok grad 2-3.",
+    "dangerLevels": [
+      1000,
+      1000,
+      1000,
+      1000,
+      2000
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.275.0",
+    "stationId": "2.275.0",
+    "name": "Ostri",
+    "alternateNames": [
+      "Upper",
+      "Lower"
+    ],
+    "grade": "IV",
+    "description": "<a href=https://www.strava.com/segments/36943719>Strava Segment</a> (2,4km @ 2.5%)\r\nAKA Åstre",
+    "dangerLevels": [
+      12,
+      15,
+      45,
+      50,
+      100
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:156.49.0",
+    "stationId": "156.49.0",
+    "name": "Rana (Saltfjellet)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "<a href=https://www.strava.com/segments/31913141>Strava Segment</a> (8.8km @ 1.7%)\r\nOBS: Måler er mye lengre nedstrøms på samme elv.",
+    "dangerLevels": [
+      2000,
+      2001,
+      2003,
+      2004,
+      4008
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:12.228.0",
+    "stationId": "12.228.0",
+    "name": "Randselva playspot",
+    "alternateNames": [
+      "Randselva",
+      "Play spot"
+    ],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      40,
+      60,
+      100,
+      100,
+      200
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:103.40.0",
+    "stationId": "103.40.0",
+    "name": "Rauma (nedre)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      8,
+      8,
+      13,
+      15,
+      30
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:103.3.0",
+    "stationId": "103.3.0",
+    "name": "Rauma (øvre)",
+    "alternateNames": [
+      "Upper"
+    ],
+    "grade": "IV",
+    "description": "I've only paddled it at 18.5.",
+    "dangerLevels": [
+      10,
+      10,
+      18,
+      25,
+      50
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.614.0",
+    "stationId": "2.614.0",
+    "name": "Rosten",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      15,
+      25,
+      35,
+      45,
+      90
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.113.0",
+    "stationId": "12.113.0",
+    "name": "Simoa",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      15,
+      20,
+      30,
+      60,
+      120
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.595.0",
+    "stationId": "2.595.0",
+    "name": "Sjoa (Åmot)",
+    "alternateNames": [
+      "Sjoa (Åsengjuvet)",
+      "Sjoa (play run)",
+      "Sjoa (Ridderspranget)",
+      "Steinholet",
+      "Ridderspranget",
+      "Play-run",
+      "Åmot"
+    ],
+    "grade": "II",
+    "description": "<a href=\"https://www.strava.com/segments/32106481\">Strava Segment</a> (12,9km @ 1,3%)",
+    "dangerLevels": [
+      25,
+      35,
+      43,
+      43,
+      86
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:127.6.0",
+    "stationId": "127.6.0",
+    "name": "Skjæker (øvre)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "Take-out i god tid før fossen.\r\nMan trenger nøkkel til bommen.",
+    "dangerLevels": [
+      14,
+      16,
+      40,
+      60,
+      120
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:16.155.0",
+    "stationId": "16.155.0",
+    "name": "Skogsåa",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      5.4,
+      8.3,
+      15,
+      19,
+      38
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.114.0",
+    "stationId": "12.114.0",
+    "name": "Sogna",
+    "alternateNames": [],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      16,
+      20,
+      35,
+      60,
+      120
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:77.3.0",
+    "stationId": "77.3.0",
+    "name": "Sogndalselva (nedre)",
+    "alternateNames": [
+      "Sogndalselva (øvre)",
+      "Upper",
+      "Lower"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      9,
+      11,
+      13,
+      17,
+      34
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:122.17.0",
+    "stationId": "122.17.0",
+    "name": "Sokna (øvre)",
+    "alternateNames": [
+      "Stavilla (nedre)",
+      "Hauka",
+      "Ila",
+      "Sokna",
+      "Upper",
+      "Lower"
+    ],
+    "grade": "IV",
+    "description": "Manky bæring om det har regna og er glatt.",
+    "dangerLevels": [
+      20,
+      35,
+      40,
+      40,
+      80
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:151.15.0",
+    "stationId": "151.15.0",
+    "name": "Susna (dusjboof)",
+    "alternateNames": [
+      "Eiteråga",
+      "Store",
+      "Krutåga",
+      "Skarmodalselva",
+      "Stavasselva",
+      "Susna"
+    ],
+    "grade": "IV",
+    "description": "<a href=\"https://www.strava.com/segments/32402200\">Strava Segment</a> (7,63km @ 1,1%)",
+    "dangerLevels": [
+      20,
+      20,
+      50,
+      70,
+      140
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:151.65.0",
+    "stationId": "151.65.0",
+    "name": "Svenningdalselva",
+    "alternateNames": [],
+    "grade": "",
+    "description": "Øvre terskel niva kommer etterpå",
+    "dangerLevels": [
+      40,
+      45,
+      100,
+      100,
+      200
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:62.17.0",
+    "stationId": "62.17.0",
+    "name": "Teigdalselvi",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      15,
+      20,
+      30,
+      40,
+      80
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:16.23.0",
+    "stationId": "16.23.0",
+    "name": "Tinnelva",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      60,
+      80,
+      250,
+      500,
+      1000
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.291.0",
+    "stationId": "2.291.0",
+    "name": "Tora",
+    "alternateNames": [
+      "Stuttgongen",
+      "Pollfoss"
+    ],
+    "grade": "IV",
+    "description": "N.B. Estimert øvre grense",
+    "dangerLevels": [
+      5,
+      9,
+      25,
+      30,
+      60
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:311.473.0",
+    "stationId": "311.473.0",
+    "name": "Trysilelva",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      40,
+      40,
+      70,
+      110,
+      220
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:103.1.0",
+    "stationId": "103.1.0",
+    "name": "Ulvåa (nedre)",
+    "alternateNames": [
+      "Ulvåa (øvre)",
+      "Upper",
+      "Lower"
+    ],
+    "grade": "III",
+    "description": "<a href=https://www.strava.com/segments/31838498>Strava Segment</a> (3,2km @ 1,7%)",
+    "dangerLevels": [
+      20,
+      20,
+      45,
+      45,
+      90
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:151.70.0",
+    "stationId": "151.70.0",
+    "name": "Unkerelva",
+    "alternateNames": [],
+    "grade": "",
+    "description": "3.4 ~ medium flow RJ/PV 11/07/22,  3.67 highish 22/07/22",
+    "dangerLevels": [
+      3.2,
+      3.3,
+      3.6,
+      3.7,
+      7.4
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:2.265.0",
+    "stationId": "2.265.0",
+    "name": "Unnsetåa",
+    "alternateNames": [
+      "Speka",
+      "Unsetåa"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      10,
+      14,
+      45,
+      45,
+      90
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann",
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:74.15.0",
+    "stationId": "74.15.0",
+    "name": "Utla (Styggjelet)",
+    "alternateNames": [],
+    "grade": "",
+    "description": "<a href=https://www.strava.com/segments/31913235>Strava Segment</a> (31.4km @ 2.6%)",
+    "dangerLevels": [
+      9,
+      10,
+      12,
+      14,
+      28
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:151.21.0",
+    "stationId": "151.21.0",
+    "name": "Vefsna (Festival run)",
+    "alternateNames": [
+      "Vefsna (Ragnarokk)"
+    ],
+    "grade": "",
+    "description": "<a href=https://www.strava.com/segments/31913426>Strava Segment</a> (6.6km @ 0,3%)",
+    "dangerLevels": [
+      10,
+      10,
+      100,
+      200,
+      400
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:62.5.0",
+    "stationId": "62.5.0",
+    "name": "Vosso",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      10,
+      20,
+      100,
+      400,
+      800
+    ],
+    "enabled": true,
+    "sources": [
+      "hvorerdetvann"
+    ]
+  },
+  {
+    "id": "nve:12.290.0",
+    "stationId": "12.290.0",
+    "name": "Upper",
+    "alternateNames": [],
+    "grade": "II+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:12.193.0",
+    "stationId": "12.193.0",
+    "name": "Bingselva",
+    "alternateNames": [
+      "Dørja"
+    ],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:59.8723°, 9.0585°",
+    "stationId": "59.8723°, 9.0585°",
+    "name": "Bjørvassåi",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.7885°, 6.6953°",
+    "stationId": "60.7885°, 6.6953°",
+    "name": "Brandset",
+    "alternateNames": [],
+    "grade": "IV+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:59.5714°, 7.7173°",
+    "stationId": "59.5714°, 7.7173°",
+    "name": "Byrteåi",
+    "alternateNames": [],
+    "grade": "V−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.9699°, 10.0901°",
+    "stationId": "60.9699°, 10.0901°",
+    "name": "Dokka",
+    "alternateNames": [],
+    "grade": "IV−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.1491°, 8.9309°",
+    "stationId": "60.1491°, 8.9309°",
+    "name": "Upper",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.1476°, 8.9970°",
+    "stationId": "60.1476°, 8.9970°",
+    "name": "Lower",
+    "alternateNames": [],
+    "grade": "VI",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:311.4.0",
+    "stationId": "311.4.0",
+    "name": "Upper",
+    "alternateNames": [
+      "Lower",
+      "Middle",
+      "Gløta"
+    ],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.6180°, 9.4829°",
+    "stationId": "62.6180°, 9.4829°",
+    "name": "Festa",
+    "alternateNames": [],
+    "grade": "III+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:65.4706°, 13.6494°",
+    "stationId": "65.4706°, 13.6494°",
+    "name": "Lille",
+    "alternateNames": [],
+    "grade": "V−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.8153°, 10.8767°",
+    "stationId": "62.8153°, 10.8767°",
+    "name": "Upper",
+    "alternateNames": [],
+    "grade": "IV+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.9017°, 10.6990°",
+    "stationId": "62.9017°, 10.6990°",
+    "name": "Lower",
+    "alternateNames": [],
+    "grade": "IV−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:123.31.0",
+    "stationId": "123.31.0",
+    "name": "Garbergselva",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:122.11.0",
+    "stationId": "122.11.0",
+    "name": "Upper",
+    "alternateNames": [
+      "Eggafossen"
+    ],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.7024°, 9.9562°",
+    "stationId": "62.7024°, 9.9562°",
+    "name": "Farleghetsbrua",
+    "alternateNames": [],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.6960°, 9.9387°",
+    "stationId": "62.6960°, 9.9387°",
+    "name": "Kommunegrensefossen (Park'n huck)",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:GLB",
+    "stationId": "GLB",
+    "name": "Pæddekummen",
+    "alternateNames": [],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.8332°, 9.7134°",
+    "stationId": "62.8332°, 9.7134°",
+    "name": "Grana",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.9735°, 8.3485°",
+    "stationId": "60.9735°, 8.3485°",
+    "name": "Grøndøla",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:66.3437°, 14.6906°",
+    "stationId": "66.3437°, 14.6906°",
+    "name": "Grønnfjellåga",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.5082°, 9.0587°",
+    "stationId": "62.5082°, 9.0587°",
+    "name": "Grøvu",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.7522°, 8.8515°",
+    "stationId": "60.7522°, 8.8515°",
+    "name": "Hemsil",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.9383°, 10.6727°",
+    "stationId": "62.9383°, 10.6727°",
+    "name": "Herjåa",
+    "alternateNames": [],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.8655°, 11.1807°",
+    "stationId": "62.8655°, 11.1807°",
+    "name": "Hesja",
+    "alternateNames": [],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.6705°, 10.5420°",
+    "stationId": "61.6705°, 10.5420°",
+    "name": "Hira",
+    "alternateNames": [],
+    "grade": "III+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.6932°, 10.0392°",
+    "stationId": "62.6932°, 10.0392°",
+    "name": "Inna",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.481.0",
+    "stationId": "2.481.0",
+    "name": "Upper",
+    "alternateNames": [],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:84.15.0",
+    "stationId": "84.15.0",
+    "name": "Jølstra",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.7503°, 9.7156°",
+    "stationId": "62.7503°, 9.7156°",
+    "name": "Upper",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.7639°, 9.7083°",
+    "stationId": "62.7639°, 9.7083°",
+    "name": "Lower",
+    "alternateNames": [],
+    "grade": "III+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:Manual",
+    "stationId": "Manual",
+    "name": "Upper",
+    "alternateNames": [
+      "Gorge section",
+      "Lower"
+    ],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.8120°, 9.6567°",
+    "stationId": "62.8120°, 9.6567°",
+    "name": "Minilla",
+    "alternateNames": [],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.6207°, 10.1673°",
+    "stationId": "61.6207°, 10.1673°",
+    "name": "Nordåa",
+    "alternateNames": [],
+    "grade": "III−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:15.61.0",
+    "stationId": "15.61.0",
+    "name": "Grettefoss play spot",
+    "alternateNames": [
+      "Vrangfoss play spot"
+    ],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.7013°, 10.1318°",
+    "stationId": "62.7013°, 10.1318°",
+    "name": "Orkla",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.25.0",
+    "stationId": "2.25.0",
+    "name": "Family run",
+    "alternateNames": [],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:2.434.0",
+    "stationId": "2.434.0",
+    "name": "Skjåkbølgen (play-spot)",
+    "alternateNames": [],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.2736°, 9.5856°",
+    "stationId": "61.2736°, 9.5856°",
+    "name": "Revåa",
+    "alternateNames": [],
+    "grade": "IV−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:311.460.0",
+    "stationId": "311.460.0",
+    "name": "Rømoåa",
+    "alternateNames": [],
+    "grade": "IV+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.8308°, 8.2243°",
+    "stationId": "61.8308°, 8.2243°",
+    "name": "Skjøli",
+    "alternateNames": [],
+    "grade": "IV+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.9900°, 8.6204°",
+    "stationId": "60.9900°, 8.6204°",
+    "name": "Smådøla",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:60.8833°, 10.6453°",
+    "stationId": "60.8833°, 10.6453°",
+    "name": "Skoledroppet",
+    "alternateNames": [],
+    "grade": "",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.3879°, 7.2023°",
+    "stationId": "62.3879°, 7.2023°",
+    "name": "Stordalselvi",
+    "alternateNames": [],
+    "grade": "V",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.0746°, 10.3958°",
+    "stationId": "62.0746°, 10.3958°",
+    "name": "Sølna",
+    "alternateNames": [],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.5886°, 10.2359°",
+    "stationId": "61.5886°, 10.2359°",
+    "name": "Søråa",
+    "alternateNames": [],
+    "grade": "IV+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:111.5.0",
+    "stationId": "111.5.0",
+    "name": "Toåa",
+    "alternateNames": [],
+    "grade": "IV−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.5326°, 9.5902°",
+    "stationId": "62.5326°, 9.5902°",
+    "name": "Tronda",
+    "alternateNames": [],
+    "grade": "V+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.8530°, 7.9923°",
+    "stationId": "61.8530°, 7.9923°",
+    "name": "Tundra",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.8020°, 7.6146°",
+    "stationId": "61.8020°, 7.6146°",
+    "name": "Tunga",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.8134°, 9.6467°",
+    "stationId": "61.8134°, 9.6467°",
+    "name": "Ula",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.8403°, 9.7286°",
+    "stationId": "61.8403°, 9.7286°",
+    "name": "Store Ula",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:65.5118°, 14.1410°",
+    "stationId": "65.5118°, 14.1410°",
+    "name": "Unkerelva",
+    "alternateNames": [],
+    "grade": "IV−",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.4652°, 9.8298°",
+    "stationId": "62.4652°, 9.8298°",
+    "name": "Unna",
+    "alternateNames": [],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.6063°, 9.3114°",
+    "stationId": "62.6063°, 9.3114°",
+    "name": "Vinndøla",
+    "alternateNames": [],
+    "grade": "III+",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:61.5433°, 9.5153°",
+    "stationId": "61.5433°, 9.5153°",
+    "name": "Upper",
+    "alternateNames": [],
+    "grade": "II",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.5920°, 9.6819°",
+    "stationId": "62.5920°, 9.6819°",
+    "name": "Oppdal",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.5646°, 9.7560°",
+    "stationId": "62.5646°, 9.7560°",
+    "name": "Ålmdalen",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.3764°, 9.2380°",
+    "stationId": "62.3764°, 9.2380°",
+    "name": "Upper",
+    "alternateNames": [],
+    "grade": "IV",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  },
+  {
+    "id": "nve:62.4725°, 9.5221°",
+    "stationId": "62.4725°, 9.5221°",
+    "name": "Lower",
+    "alternateNames": [],
+    "grade": "III",
+    "description": "",
+    "dangerLevels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": true,
+    "sources": [
+      "nokken"
+    ]
+  }
+]

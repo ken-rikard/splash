@@ -11,9 +11,29 @@ const clients = new Set<express.Response>()
 // Middleware
 app.use(cors())
 
+function enrichWithRegistry(river: RiverData) {
+  const entry = engine.registry ? registryCache.get(river.id) : undefined
+  if (!entry) return river as RiverData & { grade?: string; description?: string }
+  return { ...river, grade: entry.grade, description: entry.description }
+}
+
+let registryCache = new Map<string, { grade: string; description: string }>()
+
+async function refreshRegistryCache() {
+  if (!engine.registry) return
+  const entries = await engine.registry.load()
+  registryCache = new Map(
+    entries.filter((e) => e.grade || e.description).map((e) => [e.id, { grade: e.grade, description: e.description }])
+  )
+}
+
+refreshRegistryCache()
+setInterval(refreshRegistryCache, 60000)
+
 // REST: return all rivers
 app.get('/api/rivers', (_req, res) => {
-  res.json(engine.dataStore.getAll())
+  const rivers = engine.dataStore.getAll().map(enrichWithRegistry)
+  res.json(rivers)
 })
 
 // REST: return single river by id
@@ -23,7 +43,7 @@ app.get('/api/rivers/:id', (req, res) => {
     res.status(404).json({ error: 'River not found' })
     return
   }
-  res.json(river)
+  res.json(enrichWithRegistry(river))
 })
 
 // SSE: push real-time events

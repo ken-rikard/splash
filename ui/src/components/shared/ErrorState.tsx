@@ -10,18 +10,18 @@ function ErrorState({ message, type, lastUpdated }: ErrorStateProps) {
   const isError = type === 'error'
 
   return (
-    <div className={`flex flex-col items-center justify-center rounded-lg border p-8 text-center ${
-      isError ? 'border-red-200 bg-red-50' : 'border-amber-200 bg-amber-50'
+    <div className={`flex flex-col items-center justify-center rounded-lg border p-10 text-center ${
+      isError ? 'border-red-500/10 bg-red-500/5' : 'border-amber-500/10 bg-amber-500/5'
     }`}>
       {isError ? (
-        <TriangleAlert className="h-10 w-10 text-red-500 mb-3" />
+        <TriangleAlert className="h-10 w-10 text-danger-4 mb-4" />
       ) : (
-        <ClockAlert className="h-10 w-10 text-amber-500 mb-3" />
+        <ClockAlert className="h-10 w-10 text-status-stale mb-4" />
       )}
-      <h3 className="text-lg font-semibold text-neutral-900 mb-1">
+      <h3 className="text-lg font-display font-semibold text-white mb-1">
         Water level data unavailable
       </h3>
-      <p className="text-sm text-neutral-600 max-w-md">
+      <p className="text-sm text-slate-400 max-w-md">
         {message ?? 'Data may be stale.'}
         {lastUpdated && ` Last updated: ${lastUpdated}`}
       </p>

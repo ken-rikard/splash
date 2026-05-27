@@ -21,31 +21,40 @@ The discussion [D-02] assumed `hvorerdetvann.com` returns "server-rendered HTML"
 The planner and discuss-phase should confirm this deviation from D-02 before planning.
 
 <user_constraints>
-## User Constraints (from CONTEXT.md)
+## User Constraints (from CONTEXT.md — Session 2 Update)
 
 ### Locked Decisions
-- **D-01:** TypeScript on Node.js — aligns with web-first stack, Capacitor mobile path, consistent with UI and alert phases. No build-tool concessions needed for scraping.
-- **D-03:** The scraper targets the table structure of hvorerdetvann.com's river listing page. *(NOTE: Changed to API consumption — see D-02 update above)*
-- **D-04:** `node-cron` with configurable cron expression (default: every 15 minutes). No external scheduler dependency.
-- **D-05:** Exponential backoff (base 2s, cap 60s), max 3 retries per scrape cycle.
-- **D-06:** Stale-data window: 30 minutes. If last successful fetch > 30 min ago, emit a "stale" status.
-- **D-07:** Non-fatal errors (timeout, 5xx) retry silently. Fatal errors (invalid HTML structure, schema mismatch) skip to error state immediately. *(NOTE: "invalid HTML" changes to "invalid API response structure / schema mismatch")*
-- **D-08:** Error state is published as part of the data model so Phase 2's UI can surface it.
-- **D-09:** `DatasourceAdapter` interface/abstract class with `fetch()` and `parse()` methods.
-- **D-10:** Adapters registered via `ScraperEngine.register(adapter)`. Engine iterates adapters and emits consolidated resultset.
-- **D-11:** Adapter contract returns typed `RiverData[]` — no raw HTML/JSON leaks past the parser boundary.
-- **D-12:** Core `RiverData` interface with `id`, `name`, `source`, `currentLevel`, `alertLevel`, `lastUpdated`, `status`, `error?`.
-- **D-13:** In-memory `DataStore` holds latest RiverData, keyed by id. No disk persistence in Phase 1.
-- **D-14:** Engine emits events (`ScraperEvents`) when data updates or errors occur.
+- **D-01:** TypeScript on Node.js
+- **D-02:** Native `fetch` for JSON APIs; nokken.net SPA approach deferred to research
+- **D-03:** NVE HydAPI is the sole flow data source (parameter 1000, resolutionTime 1440)
+- **D-03a:** NVE codes: 1000=discharge, 1001=stage, 1003=temperature
+- **D-03b:** NVE API key via X-API-Key header, free registration, graceful skip
+- **D-03d:** HvorErDetVann scraped for metadata (not flow)
+- **D-03e:** nokken.net scraped for kayak grades, descriptions, guides
+- **D-03f:** Metadata import is one-time CLI, not cron
+- **D-04:** node-cron, default every 15 min
+- **D-05:** Exponential backoff (base 2s, cap 60s, max 3)
+- **D-06:** Stale-data window: 30 min
+- **D-07:** Non-fatal (5xx/timeout) retry; fatal (TypeError/schema) AbortError
+- **D-08:** Error state in data model for Phase 2 UI
+- **D-09/D-11:** DatasourceAdapter with fetch(): Promise<RiverData[]>
+- **D-10:** Adapters registered via engine.register()
+- **D-12:** RiverData with required stationId, unit, source="nve"
+- **D-13/D-14:** RiverRegistry persisted to data/rivers.json
+- **D-15:** FlowStore is in-memory only
+- **D-16:** Typed ScraperEventBus
+- **D-17/D-18/D-19:** Admin page for CRUD on river entries
 
-### the agent's Discretion
-- Schedule configuration format (env var vs config file) and project structure (monorepo vs flat) deferred to planning.
-- Testing framework and test patterns are standard TypeScript (vitest).
+### Agent's Discretion
+- Schedule config format (env var vs config file)
+- Testing framework (vitest)
+- nokken.net scraping approach (cheerio vs XHR reverse-engineering vs playwright)
 
-### Deferred Ideas (OUT OF SCOPE)
-- Custom datasource UI (v2)
-- Historical data storage (v2)
+### Deferred (OUT OF SCOPE)
 - Push notifications (v2+)
+- Historical flow storage (v2)
+- Custom datasource UI (v2)
+- Automated re-scrape of metadata
 </user_constraints>
 
 <phase_requirements>
@@ -53,23 +62,27 @@ The planner and discuss-phase should confirm this deviation from D-02 before pla
 
 | ID | Description | Research Support |
 |----|-------------|------------------|
-| SCRP-01 | System fetches water level data from hvorerdetvann.com on a configurable schedule | API endpoint `/api/sections` returns full data. `node-cron` handles scheduling. Native `fetch` with `p-retry` for resilient HTTP. |
-| SCRP-02 | System parses river name, current level, and position on the five-level scale | API returns `section.name`, `last_flow.flow`/`last_flow.meters`, and `zone` (dry/low/medium/high/very_high). `limits` array provides boundary validation. |
-| SCRP-03 | System handles scrape failures gracefully (retry, stale-data fallback, user-visible error) | `p-retry` with exponential backoff; stale-data window via timestamp comparison; `status: 'ok' | 'stale' | 'error'` in RiverData model. |
-| SCRP-04 | Datasources are implemented via pluggable adapters | `DatasourceAdapter` interface with `fetch()` + `parse()` in `src/core/adapter.ts`. `HvorErDetVannAdapter` as first implementation. |
+| SCRP-01 | System fetches flow data from NVE HydAPI on a configurable schedule | NVE HydAPI `/api/v1/Observations` with StationId, Parameter=1000, ResolutionTime=1440. `node-cron` handles scheduling. Native `fetch` with `p-retry` for resilient HTTP. |
+| SCRP-02 | System parses NVE observation data into RiverData objects with station ID, unit, and alert level | NVE returns `stationId`, `stationName`, `observervations[].value` (m³/s). Alert level computed from hardcoded thresholds or fallback distribution. |
+| SCRP-03 | System handles failures gracefully (retry, stale-data fallback, user-visible error) | `p-retry` with exponential backoff; stale-data window via timestamp comparison; `status: 'ok' | 'stale' | 'error'` in RiverData model. Adapter skips gracefully if API key missing. |
+| SCRP-04 | Datasources are implemented via pluggable adapters | `DatasourceAdapter` interface with `fetch()` in `src/core/adapter.ts`. `NveHydApiAdapter` as first implementation. Metadata import uses separate MetadataImporter pattern. |
 </phase_requirements>
 
 ## Architectural Responsibility Map
 
 | Capability | Primary Tier | Secondary Tier | Rationale |
 |------------|-------------|----------------|-----------|
-| HTTP data fetching | Backend / Service | — | Runs in Node.js, called via cron schedule. No browser involved. |
-| Data parsing / transformation | Backend / Service | — | Raw API JSON → typed RiverData objects. Parser boundary in adapter. |
-| Scrape scheduling | Backend / Service | — | node-cron in the Node.js process. Configurable expression. |
-| Retry / error handling | Backend / Service | — | p-retry manages retries. Fatal errors bubble to error state. |
-| In-memory data store | Backend / Service | — | Simple Map<id, RiverData>. Phase 2 UI reads from this store. |
-| Event emission | Backend / Service | — | Typed EventEmitter for loose coupling with UI layer (Phase 2). |
-| Adapter registration | Backend / Service | — | ScraperEngine.register(adapter). Engine orchestrates. |
+| Flow data fetching (NVE API) | Backend / Service | — | Node.js cron, native fetch + p-retry |
+| Flow data parsing | Backend / Service | — | NVE JSON → typed RiverData |
+| Flow scrape scheduling | Backend / Service | — | node-cron, configurable |
+| Retry / error handling | Backend / Service | — | p-retry manages retries |
+| FlowStore (in-memory) | Backend / Service | — | Map<id, RiverData> |
+| RiverRegistry (persistent) | Backend / Service | — | data/rivers.json read/write |
+| Event emission | Backend / Service | — | Typed EventEmitter for UI |
+| Adapter registration | Backend / Service | — | Engine.register(adapter) |
+| Metadata scraping | CLI / One-time | — | npx tsx src/import/cli.ts |
+| Metadata dedup + merge | CLI / One-time | — | MetadataMerger by stationId |
+| Admin page (CRUD rivers) | Web UI | — | Phase 1.5 / Phase 2 |
 
 ## Standard Stack
 
@@ -140,44 +153,59 @@ npm view vitest@4.1.7 version      # 4.1.7 (published 2026-05-20)
 ```mermaid
 flowchart LR
     subgraph External
-        API[("hvorerdetvann.com\n/api/sections")]
+        NVE[("NVE HydAPI\n/api/v1/Observations")]
+        HVOR[("hvorerdetvann.com\n/api/sections")]
+        NOKKEN[("nokken.net\n(SPA)")]
     end
 
-    subgraph "Scraper Engine (Node.js Process)"
+    subgraph "Flow Engine (Node.js Process, cron)"
         direction TB
         CRON["node-cron\nSchedule (every 15min)"]
         EN["ScraperEngine\nOrchestrator"]
-        AD["HvorErDetVannAdapter\n(fetch + parse)"]
-        DS[("DataStore\nMap<id, RiverData>")]
+        AD["NveHydApiAdapter\n(fetch + parse)"]
+        FS[("FlowStore\nMap<id, RiverData>\nIn-memory only")]
         EE["EventEmitter\nTyped events"]
-        CF["Config\n(schedule, retry,\nstale window)"]
+        CF["Config\n(schedule, retry,\nstale window, NVE_API_KEY)"]
+        REG["RiverRegistry\n(data/rivers.json)"]
 
         CRON -->|triggers| EN
+        EN -->|reads station IDs| REG
         EN -->|calls| AD
-        AD -->|fetch + p-retry| API
-        API -->|JSON response| AD
+        AD -->|fetch + p-retry| NVE
+        NVE -->|JSON| AD
         AD -->|RiverData[]| EN
-        EN -->|stores| DS
+        EN -->|stores| FS
         EN -->|emits| EE
+    end
 
-        EN -.->|on failure| RT["p-retry\n(exponential backoff\n3 retries)"]
-        RT -.->|retry| AD
+    subgraph "Metadata Import (CLI, one-time)"
+        CLI["npx tsx src/import/cli.ts"]
+        MS1["HvorErDetVann\nMetadataScraper"]
+        MS2["NokkenNet\nMetadataScraper"]
+        MM["MetadataMerger\n(dedup by stationId)"]
+
+        CLI -->|scrape| MS1
+        CLI -->|scrape| MS2
+        MS1 --> HVOR
+        MS2 --> NOKKEN
+        MS1 -->|Partial<RiverEntry>[]| MM
+        MS2 -->|Partial<RiverEntry>[]| MM
+        MM -->|RiverEntry[]| REG
     end
 
     subgraph "Phase 2 Consumer"
-        UI["Web UI\nReact/Svelte/etc."]
+        UI["Web UI"]
+        ADMIN["Admin Page\n(CRUD rivers)"]
         EE -->|data-update / error / stale| UI
-        DS -->|read| UI
+        FS -->|read| UI
+        REG -->|read/write| ADMIN
     end
 
-    subgraph "Future Datasources"
-        AD2["NewAdapter\n(fetch + parse)"]
-        EN -.->|register()| AD2
-    end
-
-    style API fill:#f96
-    style UI fill:#6cf
-    style AD2 fill:#9c9
+    style NVE fill:#f96
+    style HVOR fill:#f96
+    style NOKKEN fill:#f96
+    style CLI fill:#9c9
+    style ADMIN fill:#6cf
 ```
 
 ### Recommended Project Structure
@@ -186,102 +214,134 @@ flowchart LR
 splash/
 ├── package.json              # "type": "module", scripts, dependencies
 ├── tsconfig.json             # module: nodenext, strict: true
+├── data/
+│   └── rivers.json           # River registry (created by import CLI)
 ├── src/
 │   ├── index.ts              # Entry point: instantiate and start engine
-│   ├── config.ts             # Schedule, retry, stale-window configuration
+│   ├── config.ts             # Schedule, retry, stale-window, NVE_API_KEY
 │   ├── core/
-│   │   ├── types.ts          # RiverData, ScraperStatus, ZoneLevel types
+│   │   ├── types.ts          # RiverData, RiverEntry, ScraperStatus, AlertLevel
 │   │   ├── adapter.ts        # DatasourceAdapter interface
 │   │   ├── engine.ts         # ScraperEngine — orchestrator
-│   │   ├── store.ts          # DataStore — in-memory Map
-│   │   └── events.ts         # Typed event emitter (ScraperEventBus)
-│   └── adapters/
-│       └── hvorerdetvann.ts  # HvorErDetVannAdapter implementation
+│   │   ├── store.ts          # FlowStore — in-memory Map<id, RiverData>
+│   │   ├── events.ts         # Typed event emitter (ScraperEventBus)
+│   │   └── river-registry.ts # RiverRegistry — persisted CRUD
+│   ├── adapters/
+│   │   └── nve.ts            # NveHydApiAdapter implementation
+│   └── import/
+│       ├── cli.ts            # Metadata import CLI entry point
+│       ├── metadata-merger.ts # Cross-source dedup and merge
+│       ├── hvorerdetvann-metadata.ts # HvorErDetVann metadata scraper
+│       └── nokken-metadata.ts # nokken.net metadata scraper
 ├── tests/
 │   ├── core/
 │   │   ├── types.test.ts
 │   │   ├── adapter.test.ts
 │   │   ├── engine.test.ts
 │   │   ├── store.test.ts
-│   │   └── events.test.ts
-│   └── adapters/
-│       └── hvorerdetvann.test.ts
+│   │   ├── events.test.ts
+│   │   └── river-registry.test.ts
+│   ├── adapters/
+│   │   ├── nve.test.ts
+│   │   └── nve.fixtures.ts
+│   └── import/
+│       ├── metadata-merger.test.ts
+│       ├── hvorerdetvann-metadata.test.ts
+│       └── nokken-metadata.test.ts
 └── vitest.config.ts
 ```
 
 ### Pattern 1: DatasourceAdapter Interface
 
-**What:** Pluggable adapter interface separating data source interaction from the engine. Each datasource implements `fetch()` and `parse()` — the engine only knows the contract.
+**What:** Pluggable adapter interface separating data source interaction from the engine. Each datasource implements `fetch()` — the engine only knows the contract.
 
-**When to use:** For every data source added to the system. Future adapters extend this interface.
+**When to use:** For flow data sources. Metadata uses a separate MetadataImporter pattern.
 
 **Example:**
 ```typescript
-// Source: Based on D-09/D-10/D-11 from CONTEXT.md
+// Source: Based on D-09/D-10/D-11 from CONTEXT.md (Session 2)
 
 // src/core/types.ts
+export type AlertLevel = 1 | 2 | 3 | 4 | 5;
+export type RiverStatus = 'ok' | 'stale' | 'error';
+
 export interface RiverData {
-  id: string;                  // source-prefixed unique ID, e.g. "hvorerdetvann:22"
+  id: string;                  // unique, e.g. "nve:1000"
   name: string;                // human-readable river name
-  source: string;              // datasource identifier, e.g. "hvorerdetvann"
-  currentLevel: number | null; // water level in source units (m³/s)
-  alertLevel: number;          // 1-5 five-level scale position
+  source: string;              // always "nve" for flow data
+  stationId: string;           // NVE station ID (required)
+  currentLevel: number | null; // discharge in m³/s
+  unit: string;                // always "m³/s"
+  alertLevel: AlertLevel;      // 1-5 five-level scale
   lastUpdated: Date;
-  status: 'ok' | 'stale' | 'error';
-  error?: string;              // human-readable error if status is 'error'
+  status: RiverStatus;
+  error?: string;
+}
+
+export interface RiverEntry {
+  id: string;                  // "nve:1000"
+  stationId: string;           // NVE station ID
+  name: string;
+  alternateNames: string[];
+  grade: string;               // kayak/rafting difficulty, e.g. "III-IV"
+  description: string;
+  guideUrl?: string;
+  dangerLevels: number[];      // 5-level thresholds in m³/s
+  enabled: boolean;
+  sources: string[];           // e.g. ["nokken", "hvorerdetvann"]
 }
 
 // src/core/adapter.ts
 export interface DatasourceAdapter {
-  readonly sourceId: string;   // unique identifier for this datasource
+  readonly sourceId: string;
   fetch(): Promise<RiverData[]>;
 }
 
-// src/adapters/hvorerdetvann.ts
+// src/adapters/nve.ts
 import { DatasourceAdapter, RiverData } from '../core/adapter.js';
+import { nveApiKey } from '../config.js';
 
-interface ApiSection {
-  section: { id: number; name: string; limits: number[] };
-  last_flow: { timestamp: string; flow: number; meters: number };
-  zone: 'dry' | 'low' | 'medium' | 'high' | 'very_high';
-}
+const STATION_IDS = [1000, 1100, 1200, 1300, 1400]; // known NVE stations
 
-interface ApiResponse {
-  sections: ApiSection[];
-}
-
-const ZONE_TO_LEVEL: Record<string, number> = {
-  'dry': 1, 'low': 2, 'medium': 3, 'high': 4, 'very_high': 5,
-};
-
-function parseApiSection(section: ApiSection): RiverData {
-  return {
-    id: `hvorerdetvann:${section.section.id}`,
-    name: section.section.name,
-    source: 'hvorerdetvann',
-    currentLevel: section.last_flow?.flow ?? null,
-    alertLevel: ZONE_TO_LEVEL[section.zone] ?? 0,
-    lastUpdated: new Date(section.last_flow.timestamp),
-    status: 'ok',
-  };
-}
-
-export class HvorErDetVannAdapter implements DatasourceAdapter {
-  readonly sourceId = 'hvorerdetvann';
-  private readonly baseUrl = 'https://hvorerdetvann.com/api/sections';
+export class NveHydApiAdapter implements DatasourceAdapter {
+  readonly sourceId = 'nve';
+  private baseUrl = 'https://hydapi.nve.no/api/v1/Observations';
+  private apiKey = nveApiKey();
 
   async fetch(): Promise<RiverData[]> {
-    const response = await fetch(this.baseUrl, {
-      headers: { Accept: 'application/json' },
+    if (!this.apiKey) {
+      console.warn('NVE_API_KEY not configured — skipping');
+      return [];
+    }
+    const results = await Promise.allSettled(
+      STATION_IDS.map(id => this.fetchStation(id))
+    );
+    return results
+      .filter((r): r is PromiseFulfilledResult<RiverData> => r.status === 'fulfilled')
+      .map(r => r.value);
+  }
+
+  private async fetchStation(stationId: number): Promise<RiverData> {
+    const url = `${this.baseUrl}?StationId=${stationId}&Parameter=1000&ResolutionTime=1440`;
+    const res = await fetch(url, {
+      headers: { 'X-API-Key': this.apiKey!, Accept: 'application/json' },
     });
-    if (!response.ok) {
-      throw new Error(`API responded with ${response.status}`);
-    }
-    const data = (await response.json()) as ApiResponse;
-    if (!data?.sections || !Array.isArray(data.sections)) {
-      throw new Error('Invalid API response structure: missing sections array');
-    }
-    return data.sections.map(parseApiSection);
+    if (!res.ok) throw new Error(`NVE responded ${res.status} for station ${stationId}`);
+    const data = await res.json();
+    const station = data?.data?.[0];
+    if (!station?.observervations?.length) throw new Error(`No obs for station ${stationId}`);
+    const lastObs = station.observervations[station.observervations.length - 1];
+    return {
+      id: `nve:${stationId}`,
+      name: station.stationName,
+      source: 'nve',
+      stationId: String(stationId),
+      currentLevel: lastObs.value,
+      unit: 'm³/s',
+      alertLevel: computeAlertLevel(stationId, lastObs.value),
+      lastUpdated: new Date(lastObs.time),
+      status: 'ok',
+    };
   }
 }
 ```
@@ -334,53 +394,40 @@ async function fetchWithRetry<T>(adapter: DatasourceAdapter): Promise<T> {
 
 ### Pattern 3: Typed Event Emitter
 
-**What:** Wrapper around Node.js `EventEmitter` with typed event map for type-safe event contracts between the engine and consumers.
+**What:** Wrapper around Node.js `EventEmitter` with typed event map.
 
-**When to use:** For all events from the engine to the UI layer (Phase 2). Ensures consumers receive correctly typed data.
+**When to use:** For all events from the engine to the UI layer (Phase 2).
 
 **Example:**
 ```typescript
-// Source: D-14 from CONTEXT.md, Node.js EventEmitter docs
+// Source: D-16 from CONTEXT.md, Node.js EventEmitter docs
 
 import { EventEmitter } from 'node:events';
 import { RiverData } from './types.js';
 
 export interface ScraperStatus {
-  sourceId: string;
   lastFetch: Date | null;
   status: 'idle' | 'fetching' | 'ok' | 'error';
   error?: string;
 }
 
 export interface ScraperEventMap {
-  'data-update': (sourceId: string, rivers: RiverData[]) => void;
-  'error': (sourceId: string, error: Error) => void;
-  'stale': (sourceId: string, since: Date) => void;
-  'status-change': (sourceId: string, status: ScraperStatus) => void;
+  'data-update': (rivers: RiverData[]) => void;
+  'error': (error: Error) => void;
+  'stale': (since: Date) => void;
+  'status-change': (status: ScraperStatus) => void;
 }
 
 export class ScraperEventBus {
   private emitter = new EventEmitter();
-
-  on<K extends keyof ScraperEventMap>(
-    event: K,
-    listener: ScraperEventMap[K]
-  ): this {
+  on<K extends keyof ScraperEventMap>(event: K, listener: ScraperEventMap[K]): this {
     this.emitter.on(event, listener as (...args: unknown[]) => void);
     return this;
   }
-
-  emit<K extends keyof ScraperEventMap>(
-    event: K,
-    ...args: Parameters<ScraperEventMap[K]>
-  ): boolean {
+  emit<K extends keyof ScraperEventMap>(event: K, ...args: Parameters<ScraperEventMap[K]>): boolean {
     return this.emitter.emit(event, ...args);
   }
-
-  removeListener<K extends keyof ScraperEventMap>(
-    event: K,
-    listener: ScraperEventMap[K]
-  ): this {
+  removeListener<K extends keyof ScraperEventMap>(event: K, listener: ScraperEventMap[K]): this {
     this.emitter.removeListener(event, listener as (...args: unknown[]) => void);
     return this;
   }
@@ -558,36 +605,21 @@ export class DataStore {
 
 ### cron Schedule Setup
 ```typescript
-// src/config.ts
-export interface ScraperConfig {
-  schedule: string;          // cron expression (default: '*/15 * * * *')
-  scheduleTimezone: string;  // (default: 'UTC')
-  retry: {
-    retries: number;         // (default: 3)
-    minTimeout: number;      // base backoff ms (default: 2000)
-    maxTimeout: number;      // cap ms (default: 60000)
-    factor: number;          // exponential factor (default: 2)
-  };
-  staleWindowMinutes: number; // (default: 30)
-}
-
-// Source: Adapted from node-cron docs and D-04/D-05 decisions
+// src/index.ts — with RiverRegistry and NveHydApiAdapter
 
 import nodeCron from 'node-cron';
 import { ScraperEngine } from './core/engine.js';
-import { HvorErDetVannAdapter } from './adapters/hvorerdetvann.js';
+import { NveHydApiAdapter } from './adapters/nve.js';
+import { RiverRegistry } from './core/river-registry.js';
+import { defaultConfig } from './config.js';
 
-const config: ScraperConfig = {
-  schedule: process.env.SCRAPE_SCHEDULE || '*/15 * * * *',
-  scheduleTimezone: 'UTC',
-  retry: { retries: 3, minTimeout: 2000, maxTimeout: 60000, factor: 2 },
-  staleWindowMinutes: 30,
-};
+const config = defaultConfig();
+const registry = new RiverRegistry();
+const engine = new ScraperEngine(config, registry);
+engine.register(new NveHydApiAdapter());
 
-const engine = new ScraperEngine(config);
-engine.register(new HvorErDetVannAdapter());
-engine.eventBus.on('data-update', (sourceId, rivers) => {
-  console.log(`[${sourceId}] Updated ${rivers.length} rivers`);
+engine.eventBus.on('data-update', (rivers) => {
+  console.log(`Updated ${rivers.length} rivers`);
 });
 
 // Start scheduled scraping
@@ -595,7 +627,7 @@ nodeCron.schedule(config.schedule, () => {
   engine.scrapeAll();
 }, { timezone: config.scheduleTimezone });
 
-// Also run once immediately on startup
+// Run once immediately on startup
 engine.scrapeAll();
 ```
 
@@ -651,33 +683,31 @@ engine.scrapeAll();
 | Full suite command | `npx vitest run --coverage` |
 
 ### Phase Requirements → Test Map
-| Req ID | Behavior | Test Type | Automated Command | File Exists? |
-|--------|----------|-----------|-------------------|-------------|
-| SCRP-01 | Adapter fetches from API URL | unit | `npx vitest run tests/adapters/hvorerdetvann.test.ts` | ❌ Wave 0 |
-| SCRP-01 | Engine runs on schedule | unit | `npx vitest run tests/core/engine.test.ts -t "schedule"` | ❌ Wave 0 |
-| SCRP-02 | Parse API response into RiverData[] | unit | `npx vitest run tests/adapters/hvorerdetvann.test.ts -t "parse"` | ❌ Wave 0 |
-| SCRP-02 | Zone string maps to alertLevel 1-5 | unit | `npx vitest run tests/core/types.test.ts -t "zone mapping"` | ❌ Wave 0 |
-| SCRP-03 | Retry on 5xx, max 3 attempts | unit | `npx vitest run tests/core/engine.test.ts -t "retry"` | ❌ Wave 0 |
-| SCRP-03 | Fatal error skips retry | unit | `npx vitest run tests/core/engine.test.ts -t "fatal error"` | ❌ Wave 0 |
-| SCRP-03 | Stale data emitted > 30 min | unit | `npx vitest run tests/core/engine.test.ts -t "stale"` | ❌ Wave 0 |
-| SCRP-04 | Adapter can be registered | unit | `npx vitest run tests/core/engine.test.ts -t "register"` | ❌ Wave 0 |
-| SCRP-04 | Engine iterates all adapters | unit | `npx vitest run tests/core/engine.test.ts -t "multiple adapters"` | ❌ Wave 0 |
+| Req ID | Behavior | Test Type | Automated Command | Plan |
+|--------|----------|-----------|-------------------|------|
+| SCRP-01 | NVE adapter fetches from NVE HydAPI | unit | `npx vitest run tests/adapters/nve.test.ts -t "returns RiverData"` | 01-02 |
+| SCRP-01 | Engine runs on schedule | unit | `npx vitest run tests/core/engine.test.ts -t "scrapeAll"` | 01-03 |
+| SCRP-01 | Adapter skips gracefully without API key | unit | `npx vitest run tests/adapters/nve.test.ts -t "no key"` | 01-02 |
+| SCRP-02 | Parse NVE observation into RiverData with stationId | unit | `npx vitest run tests/adapters/nve.test.ts -t "shape"` | 01-02 |
+| SCRP-02 | Alert level computed from thresholds | unit | `npx vitest run tests/adapters/nve.test.ts -t "alertLevel"` | 01-02 |
+| SCRP-03 | Retry on 5xx, max 3 attempts | unit | `npx vitest run tests/core/engine.test.ts -t "retry"` | 01-03 |
+| SCRP-03 | Fatal error (TypeError) skips retry | unit | `npx vitest run tests/core/engine.test.ts -t "fatal"` | 01-03 |
+| SCRP-03 | Stale data emitted > 30 min | unit | `npx vitest run tests/core/engine.test.ts -t "stale"` | 01-03 |
+| SCRP-04 | NveHydApiAdapter implements DatasourceAdapter | unit | `npx vitest run tests/adapters/nve.test.ts -t "implements"` | 01-02 |
+| SCRP-04 | MetadataMerger deduplicates by station ID | unit | `npx vitest run tests/import/metadata-merger.test.ts` | 01-04 |
+| N/A | RiverRegistry persists to data/rivers.json | unit | `npx vitest run tests/core/river-registry.test.ts` | 01-02 |
 
 ### Sampling Rate
-- **Per task commit:** `npx vitest run --reporter=verbose`
-- **Per wave merge:** `npx vitest run --reporter=verbose`
+- **Per plan execution:** `npx vitest run --reporter=verbose`
 - **Phase gate:** Full suite green before `/gsd-verify-work`
 
-### Wave 0 Gaps
-- [ ] `tests/core/types.test.ts` — covers RiverData shape, zone-to-level mapping
-- [ ] `tests/core/adapter.test.ts` — covers DatasourceAdapter interface contract
-- [ ] `tests/core/engine.test.ts` — covers registration, retry, stale detection, multiple adapters
-- [ ] `tests/core/store.test.ts` — covers CRUD operations, source filtering
-- [ ] `tests/core/events.test.ts` — covers typed event emission/listener
-- [ ] `tests/adapters/hvorerdetvann.test.ts` — covers fetch (mocked), parse, error handling
-- [ ] `tests/adapters/hvorerdetvann.fixtures.ts` — sample API response fixtures
-- [ ] `vitest.config.ts` — configure test runner
-- [ ] Framework install: `npm install -D vitest`
+### Test Files by Plan
+| Plan | Test Files |
+|------|-----------|
+| 01-01 | types.test.ts, adapter.test.ts, nve.fixtures.ts, hvorerdetvann.fixtures.ts |
+| 01-02 | store.test.ts, events.test.ts, river-registry.test.ts, nve.test.ts |
+| 01-03 | engine.test.ts |
+| 01-04 | metadata-merger.test.ts, hvorerdetvann-metadata.test.ts, nokken-metadata.test.ts |
 
 ## Security Domain
 
@@ -729,3 +759,105 @@ engine.scrapeAll();
 
 **Research date:** 2026-05-27
 **Valid until:** 2026-06-27 (30 days — packages are stable, API is stable)
+
+---
+
+## Updated Findings (2026-05-27 Session 2)
+
+### NVE HydAPI — Primary Flow Data Source
+
+**Endpoint:** `https://hydapi.nve.no/api/v1/Observations`
+**Auth:** `X-API-Key` header, free registration at https://hydapi.nve.no/User/Account/Register
+**License:** NLOD 2.0 / CC BY 3.0 — free to use with attribution
+**Swagger:** `https://hydapi.nve.no/swagger/v1/swagger.json`
+
+Key parameters:
+| Parameter | Value | Meaning |
+|-----------|-------|---------|
+| Parameter | 1000 | Water stage (vannstand) in meters |
+| Parameter | 1001 | Discharge (vannføring) in m³/s ⬅️ THIS IS WHAT WE WANT |
+| Parameter | 1003 | Water temperature |
+| ResolutionTime | 1440 | Daily |
+| ResolutionTime | 60 | Hourly |
+| ResolutionTime | 0 | Raw/instantaneous |
+
+⚠️ **Parameter code correction (2026-05-27):** Earlier research had these swapped. Parameter 1000 = Stage (m), Parameter 1001 = Discharge (m³/s). Confirmed via `/api/v1/Parameters` endpoint.
+
+**⚠️ StationId format:** The `StationId` query parameter is a **string** in dotted NVE format (e.g., `"6.10.0"`), NOT an integer. Multiple comma-separated IDs are accepted in a single request. The response `stationId` field is also a string. The response field is `observations` (not `observervations`).
+
+**Response shape:**
+```json
+{
+  "data": [{
+    "stationId": "6.9.0",
+    "stationName": "Akerselva, ndf. Maridalsvatn",
+    "parameter": 1001,
+    "parameterName": "Vannføring",
+    "parameterNameEng": "Discharge",
+    "method": "Mean",
+    "unit": "m³/s",
+    "observations": [
+      { "value": 1.438465, "time": "2026-05-27T11:00:00Z", "correction": 0, "quality": 1 }
+    ]
+  }]
+}
+```
+
+**Key finding:** Requires free API key. Returns 401 without it. The adapter must handle missing key gracefully (skip with warning).
+
+### nokken.net — Metadata Source (HTMX + FastAPI, NOT SPA)
+
+**Finding:** nokken.net is **server-rendered HTMX** (FastAPI backend), NOT a client-rendered SPA. All content is in the initial HTML. Pages at `/rivers`, `/river/{id}`, and `/section/{id}` contain full HTML with metadata.
+
+**NVE station IDs** are found in `.mono` elements within gauge info cards on section pages (e.g., `151.15.0`).
+**Grades** are found in `.grade-chip` spans (e.g., "Grade IV+").
+**Section/river names** are in `<h1>` elements.
+
+**Scraping approach:** `cheerio` for HTML parsing. No playwright needed.
+
+### nokken.net — Example Rivers (known NVE section IDs from metadata research)
+
+Popular kayaking rivers on nokken.net (these are nokken section IDs, not NVE station IDs):
+- Drammenselva, Glomma, Numedalslågen, Sjoa, Vossa, Driva, Nidelva, Orkla
+
+### HvorErDetVann — Metadata Source
+
+The `/api/sections` endpoint returns river metadata useful for the registry:
+- `section.name` — river name
+- `section.limits` — 5-level danger zone boundaries (maps to dangerLevels in RiverEntry)
+- Section ID — may map to NVE station IDs (needs verification in research)
+
+The endpoint does NOT return kayak grades, descriptions, or guide URLs — that metadata must come from nokken.net or individual river pages on HvorErDetVann.
+
+### Cross-Source Deduplication Strategy
+
+Both sites source data from NVE. The deduplication key is the dotted NVE station ID:
+1. **HvorErDetVann:** Extract dotted NVE station ID from `gauge.url` path (e.g., `6.9.0` from `.../station/6.9.0`)
+2. **nokken.net:** Extract dotted NVE station ID from `.mono` element (e.g., `151.15.0`)
+3. **Merge:** Group by dotted NVE station ID, take richest metadata from each source (nokken for grades/descriptions, HvorErDetVann for danger levels)
+4. **NVE HydAPI:** Uses the same dotted station ID system. Parameter=1001 for discharge.
+
+⚠️ **Station ID correction (2026-05-27):** Earlier research claimed HydAPI uses integer IDs separate from the dotted system. This was WRONG. The HydAPI `StationId` query parameter accepts dotted IDs (e.g., `"6.9.0"`). Both metadata sites and the flow API share the same ID system.
+
+### Architecture Changes from Session 1
+
+| Area | Session 1 Decision | Session 2 Updated Decision |
+|------|-------------------|---------------------------|
+| Flow source | HvorErDetVann /api/sections (primary) | NVE HydAPI (sole flow source) |
+| HvorErDetVann role | Flow data adapter | Metadata source only |
+| nokken.net role | Not a datasource | Metadata source for grades/descriptions |
+| Data persistence | None (in-memory only) | RiverRegistry at data/rivers.json |
+| Flow data model | source optional, stationId optional | source always "nve", stationId required |
+| Metadata model | Not defined yet | RiverEntry with grade, description, guideUrl, dangerLevels, enabled |
+| Adapter interface | DatasourceAdapter for all sources | DatasourceAdapter for flow only; MetadataImporter pattern for metadata |
+| Admin page | Phase 2 concept | Phase 1.5 — CRUD for river entries |
+
+### Updated Dependency List
+
+**No new dependencies from Session 1.** The same stack applies:
+- p-retry, node-cron, vitest, tsx, TypeScript
+
+Potentially needed for metadata scraping (Plan 01-04 research):
+- **cheerio** — if nokken.net has metadata in HTML
+- **playwright** — if nokken.net requires client-side rendering to access metadata
+- Both are deferred to research — may not be needed if internal API endpoints are found.

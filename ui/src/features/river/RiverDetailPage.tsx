@@ -5,7 +5,6 @@ import { StatusDot } from '@/components/shared/StatusIndicator'
 import ErrorState from '@/components/shared/ErrorState'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, MapPin, Clock } from 'lucide-react'
 
 function RiverDetailPage() {
@@ -14,15 +13,16 @@ function RiverDetailPage() {
 
   if (status === 'loading') {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-6">
-        <Skeleton className="h-4 w-32 mb-6" />
-        <Skeleton className="h-8 w-64 mb-4" />
-        <Skeleton className="h-4 w-48 mb-8" />
-        <div className="p-6 rounded-lg border border-neutral-200">
-          <Skeleton className="h-4 w-24 mb-4" />
-          <Skeleton className="h-10 w-32 mb-2" />
-          <Skeleton className="h-3 w-full mb-4" />
-          <Skeleton className="h-3 w-full" />
+      <div className="mx-auto max-w-3xl">
+        <Skeleton className="h-3 w-24 bg-white/10 mb-8" />
+        <Skeleton className="h-10 w-64 bg-white/10 mb-3" />
+        <Skeleton className="h-4 w-40 bg-white/10 mb-8" />
+        <div className="p-8 rounded-lg border border-white/5 bg-surface">
+          <Skeleton className="h-3 w-20 bg-white/10 mb-6" />
+          <Skeleton className="h-14 w-36 bg-white/10 mb-2" />
+          <Skeleton className="h-4 w-24 bg-white/10 mb-6" />
+          <Skeleton className="h-2 w-full bg-white/10 mb-3" />
+          <Skeleton className="h-2 w-full bg-white/10" />
         </div>
       </div>
     )
@@ -30,12 +30,12 @@ function RiverDetailPage() {
 
   if (status === 'error' || !river) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-6">
+      <div className="mx-auto max-w-3xl">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-6 min-h-11"
+          className="inline-flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-white transition-colors mb-8 min-h-11 tracking-wide"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-3 w-3" />
           Back to all rivers
         </Link>
         <ErrorState type="error" message="Could not load river data." />
@@ -47,32 +47,48 @@ function RiverDetailPage() {
   const staleWarning = river.status === 'stale'
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
+    <div className="mx-auto max-w-3xl">
       <Link
         to="/"
-        className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-6 min-h-11"
+        className="inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white transition-colors mb-8 min-h-11 tracking-widest uppercase"
       >
-        <ArrowLeft className="h-4 w-4" />
+        <ArrowLeft className="h-3 w-3" />
         Back to all rivers
       </Link>
 
-      <h1 className="text-3xl font-bold text-neutral-900 mb-4">{river.name}</h1>
+      <div className="rounded-lg border border-white/5 bg-gradient-to-b from-surface to-surface/80 p-6 sm:p-8 mb-6">
+        <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-6 tracking-tight leading-tight">
+          {river.name}
+        </h1>
 
-      <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500 mb-2">
-        <span className="inline-flex items-center gap-1.5">
-          <MapPin className="h-4 w-4" />
-          {river.source}
-        </span>
-        <Badge variant="outline" className="text-xs">
-          {river.stationId}
-        </Badge>
-        <span className="inline-flex items-center gap-1.5">
-          <StatusDot level={river.alertLevel} status={river.status} />
-          {river.status}
-        </span>
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          {river.grade && (
+            <Badge variant="outline" className="text-[10px] uppercase tracking-widest text-slate-300 border-white/10">
+              Grade {river.grade}
+            </Badge>
+          )}
+          <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+            <MapPin className="h-3 w-3" />
+            {river.source}
+          </span>
+          <Badge variant="outline" className="text-[10px] font-mono text-slate-500 border-white/5">
+            {river.stationId}
+          </Badge>
+        </div>
+
+        {river.description && (
+          <p className="text-sm text-slate-400 leading-relaxed mb-6 max-w-prose">
+            {river.description}
+          </p>
+        )}
+
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <span className="inline-flex items-center gap-1.5">
+            <StatusDot level={river.alertLevel} status={river.status} />
+            {river.status}
+          </span>
+        </div>
       </div>
-
-      <Separator className="my-6" />
 
       <DangerLevelSection
         level={river.alertLevel}
@@ -81,25 +97,25 @@ function RiverDetailPage() {
       />
 
       {staleWarning && (
-        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        <div className="mt-4 rounded-lg border border-amber-500/10 bg-amber-500/5 px-4 py-3 text-sm text-amber-400/80">
           Data may be stale. Last updated: {formattedDate}
         </div>
       )}
 
-      <Separator className="my-6" />
-
-      <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-neutral-900">River Information</h2>
-        <div className="inline-flex items-center gap-2 text-sm text-neutral-500">
-          <Clock className="h-4 w-4" />
-          Last updated: {formattedDate}
+      <div className="mt-8 border-t border-white/5 pt-6">
+        <div className="space-y-3">
+          <h2 className="text-sm font-display font-semibold text-white tracking-wide">River Information</h2>
+          <div className="inline-flex items-center gap-2 text-xs text-slate-500">
+            <Clock className="h-3 w-3" />
+            Last updated: {formattedDate}
+          </div>
+          <div className="text-xs text-slate-500">
+            Status: <span className="font-medium text-slate-300 capitalize">{river.status}</span>
+          </div>
+          {river.error && (
+            <p className="text-xs text-danger-4">{river.error}</p>
+          )}
         </div>
-        <div className="text-sm text-neutral-500">
-          Status: <span className="font-medium text-neutral-700">{river.status}</span>
-        </div>
-        {river.error && (
-          <p className="text-sm text-red-600">{river.error}</p>
-        )}
       </div>
     </div>
   )

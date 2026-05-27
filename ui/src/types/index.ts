@@ -13,6 +13,8 @@ export interface RiverData {
   lastUpdated: Date
   status: RiverStatus
   error?: string
+  grade?: string
+  description?: string
 }
 
 export interface RiverEntry {

@@ -1,5 +1,5 @@
-import { Link, useLocation } from 'react-router'
-import { Waves, Menu, Home, Info } from 'lucide-react'
+import { Link } from 'react-router'
+import { Waves, Menu } from 'lucide-react'
 import {
   Sheet,
   SheetTrigger,
@@ -8,79 +8,72 @@ import {
 } from '@/components/ui/sheet'
 
 const NAV_ITEMS = [
-  { to: '/', label: 'River Levels', icon: Home, current: true },
-  { to: '#favorites', label: 'Favorites', icon: Info, disabled: true },
-  { to: '#settings', label: 'Settings', icon: Info, disabled: true },
+  { to: '/', label: 'River Levels' },
+  { to: '#favorites', label: 'Favorites', disabled: true },
+  { to: '#settings', label: 'Settings', disabled: true },
 ]
 
 function NavBar() {
-  const location = useLocation()
-
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-white border-b border-neutral-200">
-      {/* Desktop: app title */}
-      <Link
-        to="/"
-        className="inline-flex items-center gap-2 text-lg font-semibold text-neutral-900"
-      >
-        <Waves className="h-5 w-5 text-blue-600" />
-        Splash
-      </Link>
-
-      {/* Desktop navigation (hidden on mobile) */}
-      <nav className="hidden md:flex items-center gap-6">
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-deep-bg/80 backdrop-blur-lg">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 py-4">
         <Link
           to="/"
-          className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors"
+          className="inline-flex items-center gap-2.5 text-xl font-display font-semibold tracking-tight text-white"
         >
-          River Levels
+          <Waves className="h-5 w-5 text-accent-water" />
+          Splash
         </Link>
-      </nav>
 
-      {/* Mobile: hamburger menu with Sheet drawer */}
-      <Sheet>
-        <SheetTrigger
-          className="flex md:hidden items-center justify-center min-h-11 min-w-11 rounded-md hover:bg-neutral-100 transition-colors"
-          aria-label="Open navigation menu"
-        >
-          <Menu className="h-5 w-5 text-neutral-700" />
-        </SheetTrigger>
-        <SheetContent side="left" className="w-64 p-0">
-          <SheetTitle className="sr-only">Navigation</SheetTitle>
-          <div className="flex items-center gap-2 px-4 py-4 border-b border-neutral-200">
-            <Waves className="h-5 w-5 text-blue-600" />
-            <span className="text-lg font-semibold text-neutral-900">Splash</span>
-          </div>
-          <nav className="flex flex-col p-2 gap-1">
-            {NAV_ITEMS.map((item) => {
-              const isActive = !item.disabled && location.pathname === item.to
-              const Icon = item.icon
-              return (
+        <nav className="hidden md:flex items-center gap-8">
+          {NAV_ITEMS.filter(i => !i.disabled).map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="text-xs font-medium text-slate-400 hover:text-white transition-colors tracking-widest uppercase"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <Sheet>
+          <SheetTrigger
+            className="flex md:hidden items-center justify-center min-h-11 min-w-11 rounded-md hover:bg-white/5 transition-colors"
+            aria-label="Open navigation menu"
+          >
+            <Menu className="h-5 w-5 text-slate-300" />
+          </SheetTrigger>
+          <SheetContent side="left" className="w-64 border-r border-white/5 bg-deep-bg p-0">
+            <SheetTitle className="sr-only">Navigation</SheetTitle>
+            <div className="flex items-center gap-2.5 px-4 py-4 border-b border-white/5">
+              <Waves className="h-5 w-5 text-accent-water" />
+              <span className="text-lg font-display font-semibold text-white">Splash</span>
+            </div>
+            <nav className="flex flex-col p-2 gap-1">
+              {NAV_ITEMS.map((item) => (
                 <Link
                   key={item.to}
                   to={item.disabled ? '#' : item.to}
                   className={`flex items-center gap-3 min-h-11 px-3 rounded-md text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'text-blue-600 bg-blue-50'
-                      : item.disabled
-                        ? 'text-neutral-400 cursor-not-allowed'
-                        : 'text-neutral-700 hover:bg-neutral-100'
+                    item.disabled
+                      ? 'text-slate-600 cursor-not-allowed'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
                   }`}
                   aria-disabled={item.disabled}
                   tabIndex={item.disabled ? -1 : undefined}
                   onClick={item.disabled ? (e) => e.preventDefault() : undefined}
                 >
-                  <Icon className="h-4 w-4" />
                   {item.label}
                   {item.disabled && (
-                    <span className="ml-auto text-xs text-neutral-400">Soon</span>
+                    <span className="ml-auto text-[10px] text-slate-600 tracking-wide uppercase">Soon</span>
                   )}
                 </Link>
-              )
-            })}
-          </nav>
-        </SheetContent>
-      </Sheet>
+              ))}
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   )
 }
