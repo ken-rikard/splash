@@ -105,6 +105,15 @@ None - plan executed exactly as written.
 - ✅ GREEN gate: `feat(04-alerting-engine): implement alert evaluation engine` — commit `c9c8292`
 - REFACTOR gate: Skipped — implementation was minimal and clean on first pass; no refactoring needed.
 
+## Self-Check: PASSED
+
+- ✅ All 4 modified files exist on disk
+- ✅ All 4 commits verified in git log (RED test, GREEN feat, wiring feat, docs)
+- ✅ 17 alert-engine tests pass (5 CRUD + 13 evaluation)
+- ✅ TypeScript compilation passes (`npx tsc --noEmit`)
+- ✅ No dual AlertEngine instantiation in server.ts
+- ✅ `evaluate()` method has 3 occurrences in alert-engine.ts
+
 ## Next Phase Readiness
 
 - Alert evaluation runs automatically on data-update events
