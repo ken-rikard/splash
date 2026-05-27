@@ -1,13 +1,13 @@
 # Roadmap: Splash
 
-**Phases:** 5 (Phase 3 active) | **Requirements mapped:** 14/14 | Coverage: 100% ✓
+**Phases:** 5 (Phase 5 active) | **Requirements mapped:** 14/14 | Coverage: 100% ✓
 
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 1 | Scraper Engine | Fetch and parse river data with pluggable datasource adapter | SCRP-01, SCRP-02, SCRP-03, SCRP-04 | 4 |
 | 2 | Web UI | Responsive dashboard and river detail views | UI-01, UI-02, UI-03, UI-04 | 4 |
 | 3 | Favorites Engine | 2/2 | Complete   | 2026-05-27 |
-| 4 | Alerting Engine | Server-side threshold checking and alert evaluation | ALERT-01, ALERT-02, ARC-01, ARC-02 | 4 |
+| 4 | Alerting Engine | 2/2 | Complete   | 2026-05-27 |
 | 5 | Alerts Page + UX | Dedicated alerts page with in-app notification surface | ALERT-03, ALERT-04 | 3 |
 
 ---
@@ -67,7 +67,7 @@
 ### Phase 4: Alerting Engine
 **Goal:** Server-side threshold checking and alert evaluation.
 **Mode:** mvp
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 **Success Criteria:**
 1. User can set alert threshold by danger level (1-5) per river
@@ -78,12 +78,13 @@
 **Requirements:** ALERT-01, ALERT-02, ARC-01, ARC-02
 
 **Plans:**
-- [ ] 04-01 — Alert Config Management: types, AlertEngine config CRUD, REST endpoints for config, tests
-- [ ] 04-02 — Alert Evaluation + Active State: evaluate() method, data-update wiring, active alert REST endpoint, tests
+- [x] 04-01 — Alert Config Management: types, AlertEngine config CRUD, REST endpoints for config, tests
+- [x] 04-02 — Alert Evaluation + Active State: evaluate() method, data-update wiring, active alert REST endpoint, tests
 
 ### Phase 5: Alerts Page + UX
 **Goal:** Dedicated alerts page with in-app notification surface.
 **Mode:** mvp
+**Plans:** 2 plans
 
 **Success Criteria:**
 1. Dedicated alerts page shows all triggered alerts with river name, level, and timestamp
@@ -92,6 +93,10 @@
 4. River detail page shows whether an alert is configured
 
 **Requirements:** ALERT-03, ALERT-04
+
+**Plans:**
+- [ ] 05-01 — Server-side alert events: event types, evaluate() diff, SSE forwarding, GET /api/alerts/config/:id
+- [ ] 05-02 — Client-side alert UX: AlertProvider, useAlerts, NavBar badge, AlertsPage, RiverDetailPage config
 
 ---
 
