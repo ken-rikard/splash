@@ -65,25 +65,25 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCRP-01 |  | Pending |
-| SCRP-02 |  | Pending |
-| SCRP-03 |  | Pending |
-| SCRP-04 |  | Pending |
-| FAV-01 |  | Pending |
-| FAV-02 |  | Pending |
-| FAV-03 |  | Pending |
-| ALRT-01 |  | Pending |
-| ALRT-02 |  | Pending |
-| ALRT-03 |  | Pending |
-| UI-01 |  | Pending |
-| UI-02 |  | Pending |
-| UI-03 |  | Pending |
-| UI-04 |  | Pending |
+| SCRP-01 | Phase 1 | Pending |
+| SCRP-02 | Phase 1 | Pending |
+| SCRP-03 | Phase 1 | Pending |
+| SCRP-04 | Phase 1 | Pending |
+| FAV-01 | Phase 3 | Pending |
+| FAV-02 | Phase 3 | Pending |
+| FAV-03 | Phase 3 | Pending |
+| ALRT-01 | Phase 3 | Pending |
+| ALRT-02 | Phase 3 | Pending |
+| ALRT-03 | Phase 3 | Pending |
+| UI-01 | Phase 2 | Pending |
+| UI-02 | Phase 2 | Pending |
+| UI-03 | Phase 2 | Pending |
+| UI-04 | Phase 2 | Pending |
 
 **Coverage:**
 - v1 requirements: 14 total
-- Mapped to phases: 0
-- Unmapped: 14 ⚠️
+- Mapped to phases: 14
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-05-27*
