@@ -1,5 +1,7 @@
 import { useParams, Link } from 'react-router'
 import { useRiver } from '@/hooks/useRiver'
+import { useFavorites } from '@/hooks/useFavorites'
+import { FavoriteButton } from '@/components/shared/FavoriteButton'
 import { DangerLevelSection } from './DangerLevelSection'
 import { StatusDot } from '@/components/shared/StatusIndicator'
 import ErrorState from '@/components/shared/ErrorState'
@@ -10,6 +12,7 @@ import { ArrowLeft, MapPin, Clock } from 'lucide-react'
 function RiverDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { river, status } = useRiver(id!)
+  const { isFavorite, toggleFavorite } = useFavorites()
 
   if (status === 'loading') {
     return (
@@ -57,9 +60,16 @@ function RiverDetailPage() {
       </Link>
 
       <div className="rounded-lg border border-white/5 bg-gradient-to-b from-surface to-surface/80 p-6 sm:p-8 mb-6">
-        <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-6 tracking-tight leading-tight">
-          {river.name}
-        </h1>
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <h1 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight leading-tight">
+            {river.name}
+          </h1>
+          <FavoriteButton
+            riverId={river.id}
+            isFavorite={isFavorite(river.id)}
+            onToggle={toggleFavorite}
+          />
+        </div>
 
         <div className="flex flex-wrap items-center gap-3 mb-4">
           {river.grade && (
