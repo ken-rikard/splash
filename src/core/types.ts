@@ -35,3 +35,29 @@ export interface ScraperStatus {
   status: ScraperFetchStatus
   error?: string
 }
+
+export interface AlertConfig {
+  riverId: string
+  type: 'level' | 'numeric'
+  /** Required when type === 'level' — the danger level to alert at (1-5) */
+  level?: AlertLevel
+  /** Required when type === 'numeric' — flow threshold in m³/s */
+  customValue?: number
+  /** Whether this config is actively evaluated */
+  enabled: boolean
+}
+
+export interface ActiveAlert {
+  riverId: string
+  config: AlertConfig
+  /** The resolved threshold value that was crossed */
+  threshold: number
+  /** The current river flow at time of evaluation */
+  currentValue: number
+  /** The river's danger level at time of evaluation */
+  alertLevel: AlertLevel
+  /** When the alert first triggered */
+  triggeredAt: Date
+  /** Snapshot of the RiverData that triggered this alert */
+  snapshot: RiverData
+}
