@@ -14,12 +14,19 @@
 
 ### Phase 1: Scraper Engine
 **Goal:** Fetch and parse river data with pluggable datasource adapter.
-**Mode:** mvp
+**Mode:** standard
+**Plans:** 3 plans
+
 **Success Criteria:**
 1. System fetches data from hvorerdetvann.com and returns structured river objects
 2. Failed fetches trigger retry and don't crash the app
 3. A second datasource can be added by writing a new adapter (no core changes)
 4. River data includes name, current level, and five-level scale position
+
+**Plans:**
+- [ ] 01-01-PLAN.md — Foundation: project scaffold, core types, adapter interface, config, test fixtures
+- [ ] 01-02-PLAN.md — Building blocks: DataStore, typed event bus, HvorErDetVannAdapter
+- [ ] 01-03-PLAN.md — Orchestration: ScraperEngine with retry/stale handling, entry point with cron
 
 ### Phase 2: Web UI
 **Goal:** Responsive dashboard and river detail views.
