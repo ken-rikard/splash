@@ -49,10 +49,12 @@ Reliable river flow monitoring with timely alerts when water levels cross critic
 
 ## Context
 
-- Primary datasource: hvorerdetvann.com (Norwegian river flow data with five alert levels)
+- Current datasource: NVE HydAPI — 84 Norwegian river stations with real-time flow data
 - Target users: People who need to monitor river levels — outdoors enthusiasts, property owners near rivers
-- Future-proofing: Adapter/plugin pattern from day one so adding datasources doesn't require rewrites
-- Mobile path: PWA or responsive web app that can be wrapped with WebView/Capacitor for iOS/Android
+- Architecture: Adapter pattern for datasources; Express server with REST + SSE; React SPA with Tailwind v4 + shadcn
+- Mobile path: PWA already configured (vite-plugin-pwa, standalone manifest); Capacitor wrapping planned
+- Phase 1 and 2 complete — scraper engine, NVE adapter, 84 live rivers, dark editorial web UI, PWA
+- Next: Personal favorites (localStorage) and threshold-based alerts with dedicated alerts page
 
 ## Constraints
 
