@@ -37,3 +37,21 @@ export interface ScraperStatus {
   status: ScraperFetchStatus
   error?: string
 }
+
+export interface AlertConfig {
+  riverId: string
+  type: 'level' | 'numeric'
+  level?: AlertLevel
+  customValue?: number
+  enabled: boolean
+}
+
+export interface ActiveAlert {
+  riverId: string
+  config: AlertConfig
+  threshold: number
+  currentValue: number
+  alertLevel: AlertLevel
+  triggeredAt: Date
+  snapshot: RiverData
+}
