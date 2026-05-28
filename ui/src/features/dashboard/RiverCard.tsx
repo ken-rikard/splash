@@ -35,7 +35,7 @@ export function RiverCard({
 
       <div className="flex items-baseline gap-1.5 mb-4">
         <p className="text-2xl sm:text-3xl font-display font-bold text-white leading-none tracking-tight">
-          {river.currentLevel ?? '—'}
+          {river.currentLevel != null ? river.currentLevel.toFixed(2) : '—'}
         </p>
         <span className="text-sm text-slate-500 flex-1">{river.unit}</span>
         {river.grade && <span className="text-sm text-slate-500" title="Grade" >{river.grade}</span>}
