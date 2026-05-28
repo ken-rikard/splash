@@ -1,21 +1,28 @@
 import { useState, useMemo } from 'react'
-import { Heart } from 'lucide-react'
+import { Heart, MapPin } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button'
 import { RiverCard } from './RiverCard'
 import { FilterBar, type SortKey } from './FilterBar'
 import EmptyState from './EmptyState'
 import ErrorState from '@/components/shared/ErrorState'
 import { useRivers } from '@/hooks/useRivers'
 import { useFavorites } from '@/hooks/useFavorites'
+import { useHomeLocation } from '@/hooks/useHomeLocation'
+import { haversineKm } from '@/lib/distance'
 
 function DashboardPage() {
   const { rivers, status } = useRivers()
   const { isFavorite, toggleFavorite, count } = useFavorites()
+  const { location: homeLocation, loading: homeLoading, requestGeolocation, setLocation, error: homeError } = useHomeLocation()
   const [filter, setFilter] = useState<'all' | 'favorites'>('all')
   const [selectedGrades, setSelectedGrades] = useState<string[]>([])
   const [selectedLevels, setSelectedLevels] = useState<number[]>([])
   const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortAsc, setSortAsc] = useState(true)
+  const [showHomeDialog, setShowHomeDialog] = useState(false)
+  const [homeLat, setHomeLat] = useState('')
+  const [homeLng, setHomeLng] = useState('')
 
   const displayRivers = useMemo(() => {
     let result = filter === 'favorites'
@@ -34,6 +41,12 @@ function DashboardPage() {
       let cmp = 0
       if (sortKey === 'name') {
         cmp = a.name.localeCompare(b.name)
+      } else if (sortKey === 'distance') {
+        if (homeLocation && a.latitude != null && b.latitude != null) {
+          const da = haversineKm(homeLocation.latitude, homeLocation.longitude, a.latitude, a.longitude)
+          const db = haversineKm(homeLocation.latitude, homeLocation.longitude, b.latitude, b.longitude)
+          cmp = da - db
+        }
       } else if (sortKey === 'flow') {
         cmp = (a.currentLevel ?? 0) - (b.currentLevel ?? 0)
       } else if (sortKey === 'level') {
@@ -43,7 +56,7 @@ function DashboardPage() {
     })
 
     return result
-  }, [rivers, filter, isFavorite, selectedGrades, selectedLevels, sortKey, sortAsc])
+  }, [rivers, filter, isFavorite, selectedGrades, selectedLevels, sortKey, sortAsc, homeLocation])
 
   if (status === 'loading') {
     return (
@@ -92,7 +105,29 @@ function DashboardPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-3xl font-display font-bold text-white tracking-tight mb-4">River Levels</h1>
+        <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
+          <h1 className="text-3xl font-display font-bold text-white tracking-tight">River Levels</h1>
+          <div className="flex items-center gap-2">
+            {homeLocation ? (
+              <span className="text-[10px] text-slate-500">
+                <MapPin className="inline h-3 w-3 mr-1" />
+                {homeLocation.label ?? `${homeLocation.latitude.toFixed(4)}, ${homeLocation.longitude.toFixed(4)}`}
+              </span>
+            ) : (
+              <Button variant="ghost" size="xs" onClick={() => { requestGeolocation(); if (!homeLoading) setShowHomeDialog(true) }}>
+                <MapPin className="h-3 w-3 mr-1" />
+                Set Home
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {homeError && (
+          <div className="mb-3 rounded border border-amber-500/10 bg-amber-500/5 px-3 py-2 text-xs text-amber-400/80">
+            {homeError}
+          </div>
+        )}
+
         <FilterBar
           filter={filter}
           onChange={setFilter}
@@ -106,6 +141,55 @@ function DashboardPage() {
           onSortChange={(k, a) => { setSortKey(k); setSortAsc(a) }}
         />
       </div>
+
+      {showHomeDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setShowHomeDialog(false)}>
+          <div className="rounded-lg border border-white/10 bg-surface p-6 w-full max-w-sm mx-4" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-sm font-display font-semibold text-white mb-4">Set Home Location</h2>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-[10px] text-slate-500 uppercase tracking-widest mb-1">Latitude</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={homeLat}
+                  onChange={(e) => setHomeLat(e.target.value)}
+                  placeholder="e.g. 59.91"
+                  className="w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-accent-water/40 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] text-slate-500 uppercase tracking-widest mb-1">Longitude</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={homeLng}
+                  onChange={(e) => setHomeLng(e.target.value)}
+                  placeholder="e.g. 10.75"
+                  className="w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-accent-water/40 focus:outline-none"
+                />
+              </div>
+              <div className="flex gap-2 pt-1">
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    const lat = parseFloat(homeLat)
+                    const lng = parseFloat(homeLng)
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                      setLocation(lat, lng, `${lat.toFixed(4)}, ${lng.toFixed(4)}`)
+                      setShowHomeDialog(false)
+                    }
+                  }}
+                  disabled={!homeLat || !homeLng}
+                >
+                  Save
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => setShowHomeDialog(false)}>Cancel</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {status === 'stale' && (
         <div className="mb-6 rounded-lg border border-amber-500/10 bg-amber-500/5 px-4 py-3 text-sm text-amber-400/80">
           Data may be stale. Values shown may not reflect current conditions.

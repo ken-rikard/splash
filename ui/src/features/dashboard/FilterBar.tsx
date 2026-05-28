@@ -6,7 +6,7 @@ const GRADES = ['II', 'II+', 'III', 'III+', 'III−', 'IV', 'IV+', 'IV−', 'V',
 
 const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
 
-export type SortKey = 'name' | 'flow' | 'level'
+export type SortKey = 'name' | 'flow' | 'level' | 'distance'
 
 interface FilterBarProps {
   filter: FilterValue
@@ -116,6 +116,8 @@ export function FilterBar({
         >
           <option value="name:asc">Name ↑</option>
           <option value="name:desc">Name ↓</option>
+          <option value="distance:asc">Nearest</option>
+          <option value="distance:desc">Farthest</option>
           <option value="flow:desc">Flow ↑</option>
           <option value="flow:asc">Flow ↓</option>
           <option value="level:asc">Level ↑</option>

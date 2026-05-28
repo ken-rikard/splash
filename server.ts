@@ -15,16 +15,24 @@ app.use(express.json())
 function enrichWithRegistry(river: RiverData) {
   const entry = engine.registry ? registryCache.get(river.id) : undefined
   if (!entry) return river as RiverData & { grade?: string; description?: string }
-  return { ...river, stationName: river.name, name: entry.name, grade: entry.grade, description: entry.description }
+  return {
+    ...river,
+    stationName: river.name,
+    name: entry.name,
+    grade: entry.grade,
+    description: entry.description,
+    latitude: entry.latitude ?? river.latitude,
+    longitude: entry.longitude ?? river.longitude,
+  }
 }
 
-let registryCache = new Map<string, { name: string; grade: string; description: string }>()
+let registryCache = new Map<string, { name: string; grade: string; description: string; latitude?: number; longitude?: number }>()
 
 async function refreshRegistryCache() {
   if (!engine.registry) return
   const entries = await engine.registry.load()
   registryCache = new Map(
-    entries.map((e) => [e.id, { name: e.name, grade: e.grade, description: e.description }])
+    entries.map((e) => [e.id, { name: e.name, grade: e.grade, description: e.description, latitude: e.latitude, longitude: e.longitude }])
   )
 }
 

@@ -8,6 +8,8 @@ export interface RiverData {
   stationName?: string
   source: string
   stationId: string
+  latitude?: number
+  longitude?: number
   currentLevel: number | null
   unit: string
   alertLevel: AlertLevel
@@ -27,6 +29,8 @@ export interface RiverEntry {
   dangerLevels: number[]
   enabled: boolean
   sources: string[]
+  latitude?: number
+  longitude?: number
 }
 
 export type ScraperFetchStatus = 'idle' | 'fetching' | 'ok' | 'error'

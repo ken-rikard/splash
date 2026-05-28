@@ -8,6 +8,8 @@ export interface RiverData {
   stationName?: string
   source: string
   stationId: string
+  latitude?: number
+  longitude?: number
   currentLevel: number | null
   unit: string
   alertLevel: AlertLevel
