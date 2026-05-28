@@ -37,7 +37,8 @@ export function RiverCard({
         <p className="text-2xl sm:text-3xl font-display font-bold text-white leading-none tracking-tight">
           {river.currentLevel ?? '—'}
         </p>
-        <span className="text-sm text-slate-500">{river.unit}</span>
+        <span className="text-sm text-slate-500 flex-1">{river.unit}</span>
+        {river.grade && <span className="text-sm text-slate-500" title="Grade" >{river.grade}</span>}
       </div>
 
       <DangerLevelBar level={river.alertLevel} />
