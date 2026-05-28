@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Heart } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RiverCard } from './RiverCard'
-import { FilterBar } from './FilterBar'
+import { FilterBar, type SortKey } from './FilterBar'
 import EmptyState from './EmptyState'
 import ErrorState from '@/components/shared/ErrorState'
 import { useRivers } from '@/hooks/useRivers'
@@ -12,9 +12,38 @@ function DashboardPage() {
   const { rivers, status } = useRivers()
   const { isFavorite, toggleFavorite, count } = useFavorites()
   const [filter, setFilter] = useState<'all' | 'favorites'>('all')
-  const displayRivers = filter === 'favorites'
-    ? rivers.filter(r => isFavorite(r.id))
-    : rivers
+  const [selectedGrades, setSelectedGrades] = useState<string[]>([])
+  const [selectedLevels, setSelectedLevels] = useState<number[]>([])
+  const [sortKey, setSortKey] = useState<SortKey>('name')
+  const [sortAsc, setSortAsc] = useState(true)
+
+  const displayRivers = useMemo(() => {
+    let result = filter === 'favorites'
+      ? rivers.filter(r => isFavorite(r.id))
+      : [...rivers]
+
+    if (selectedGrades.length > 0) {
+      result = result.filter((r) => r.grade && selectedGrades.includes(r.grade))
+    }
+
+    if (selectedLevels.length > 0) {
+      result = result.filter((r) => selectedLevels.includes(r.alertLevel))
+    }
+
+    result.sort((a, b) => {
+      let cmp = 0
+      if (sortKey === 'name') {
+        cmp = a.name.localeCompare(b.name)
+      } else if (sortKey === 'flow') {
+        cmp = (a.currentLevel ?? 0) - (b.currentLevel ?? 0)
+      } else if (sortKey === 'level') {
+        cmp = a.alertLevel - b.alertLevel
+      }
+      return sortAsc ? cmp : -cmp
+    })
+
+    return result
+  }, [rivers, filter, isFavorite, selectedGrades, selectedLevels, sortKey, sortAsc])
 
   if (status === 'loading') {
     return (
@@ -62,11 +91,20 @@ function DashboardPage() {
 
   return (
     <div>
-      <div className="flex items-start justify-between mb-8 flex-wrap gap-3">
-        <h1 className="text-3xl font-display font-bold text-white tracking-tight">River Levels</h1>
-        {count > 0 && (
-          <FilterBar filter={filter} onChange={setFilter} favoritesCount={count} />
-        )}
+      <div className="mb-6">
+        <h1 className="text-3xl font-display font-bold text-white tracking-tight mb-4">River Levels</h1>
+        <FilterBar
+          filter={filter}
+          onChange={setFilter}
+          favoritesCount={count}
+          selectedGrades={selectedGrades}
+          onGradeChange={setSelectedGrades}
+          selectedLevels={selectedLevels}
+          onLevelChange={setSelectedLevels}
+          sortKey={sortKey}
+          sortAsc={sortAsc}
+          onSortChange={(k, a) => { setSortKey(k); setSortAsc(a) }}
+        />
       </div>
       {status === 'stale' && (
         <div className="mb-6 rounded-lg border border-amber-500/10 bg-amber-500/5 px-4 py-3 text-sm text-amber-400/80">
