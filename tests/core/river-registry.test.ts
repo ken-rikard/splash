@@ -14,7 +14,7 @@ function makeEntry(id: string): RiverEntry {
     alternateNames: [],
     grade: 'III',
     description: 'Test river',
-    dangerLevels: [10, 30, 100, 300, 600],
+    flowLevels: [10, 30, 100, 300, 600],
     enabled: true,
     sources: ['nokken'],
   }

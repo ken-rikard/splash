@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { engine, alertEngine } from './src/index.js'
-import type { RiverData, AlertLevel, ActiveAlert } from './src/core/types.js'
+import type { RiverData, FlowLevel, ActiveAlert } from './src/core/types.js'
 
 const PORT = parseInt(process.env.PORT ?? '3000', 10)
 const app = express()
@@ -86,7 +86,7 @@ app.put('/api/alerts/config/:id', (req, res) => {
   const config = alertEngine.setConfig({
     riverId: req.params.id,
     type,
-    level: type === 'level' ? level as AlertLevel : undefined,
+    level: type === 'level' ? level as FlowLevel : undefined,
     customValue: type === 'numeric' ? customValue : undefined,
     enabled: enabled !== false,
   })

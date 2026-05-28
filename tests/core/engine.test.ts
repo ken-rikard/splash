@@ -17,7 +17,7 @@ function createMockAdapter(sourceId: string, failTimes = 0): DatasourceAdapter {
         stationId: '1000',
         currentLevel: 10,
         unit: 'm³/s',
-        alertLevel: 2,
+        conditionLevel: 2,
         lastUpdated: new Date(),
         status: 'ok',
       }

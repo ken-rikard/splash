@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { AlertEngine } from '../../src/core/alert-engine.js'
-import type { AlertConfig, RiverData, AlertLevel } from '../../src/core/types.js'
+import type { AlertConfig, RiverData, FlowLevel } from '../../src/core/types.js'
 
-function makeRiver(id: string, currentLevel: number, alertLevel: AlertLevel): RiverData {
+function makeRiver(id: string, currentLevel: number, conditionLevel: FlowLevel): RiverData {
   return {
     id,
     name: id,
@@ -10,7 +10,7 @@ function makeRiver(id: string, currentLevel: number, alertLevel: AlertLevel): Ri
     stationId: id.replace('nve:', ''),
     currentLevel,
     unit: 'm³/s',
-    alertLevel,
+    conditionLevel,
     lastUpdated: new Date(),
     status: 'ok',
   }
@@ -67,12 +67,12 @@ describe('AlertEngine', () => {
   })
 
   describe('evaluation — level-based', () => {
-    it('triggers when alertLevel >= configured level', () => {
+    it('triggers when conditionLevel >= configured level', () => {
       const engine = new AlertEngine()
       engine.setConfig({ riverId: 'nve:1000', type: 'level', level: 3, enabled: true })
       engine.evaluate([makeRiver('nve:1000', 200, 3)])
       expect(engine.getActiveAlerts()).toHaveLength(1)
-      expect(engine.getActiveAlert('nve:1000')!.alertLevel).toBe(3)
+      expect(engine.getActiveAlert('nve:1000')!.conditionLevel).toBe(3)
     })
 
     it('does not trigger at lower levels', () => {

@@ -67,7 +67,7 @@ export class AlertEngine {
           config,
           threshold: this.resolveThreshold(config),
           currentValue: river.currentLevel,
-          alertLevel: river.alertLevel,
+          conditionLevel: river.conditionLevel,
           triggeredAt: new Date(),
           snapshot: { ...river },
         }
@@ -94,7 +94,7 @@ export class AlertEngine {
 
   private isThresholdExceeded(config: AlertConfig, river: RiverData): boolean {
     if (config.type === 'level') {
-      return config.level !== undefined && river.alertLevel >= config.level
+      return config.level !== undefined && river.conditionLevel >= config.level
     }
     // Numeric: strict greater-than (exceeds threshold)
     // currentLevel is guaranteed non-null by evaluate() guard clause

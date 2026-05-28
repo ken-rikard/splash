@@ -5,7 +5,7 @@ import type { RiverEntry } from '../../src/core/types.js'
 describe('MetadataMerger', () => {
   it('merges two sources with overlapping station IDs', async () => {
     const source1: Partial<RiverEntry>[] = [
-      { id: 'nve:1000', stationId: '1000', name: 'Drammenselva', grade: '', description: 'Short desc', sources: ['hvorerdetvann'], dangerLevels: [10, 30, 100, 300, 600] },
+      { id: 'nve:1000', stationId: '1000', name: 'Drammenselva', grade: '', description: 'Short desc', sources: ['hvorerdetvann'], flowLevels: [10, 30, 100, 300, 600] },
     ]
     const source2: Partial<RiverEntry>[] = [
       { id: 'nve:1000', stationId: '1000', name: 'Drammenselva', grade: 'III', description: 'Long description with more detail', sources: ['nokken'] },
@@ -15,7 +15,7 @@ describe('MetadataMerger', () => {
     expect(result).toHaveLength(1)
     expect(result[0]!.grade).toBe('III')
     expect(result[0]!.description).toBe('Long description with more detail')
-    expect(result[0]!.dangerLevels[0]).toBe(10)
+    expect(result[0]!.flowLevels[0]).toBe(10)
   })
 
   it('deduplicates by station ID', async () => {
@@ -57,7 +57,7 @@ describe('MetadataMerger', () => {
 
   it('fills all RiverEntry fields', async () => {
     const source: Partial<RiverEntry>[] = [
-      { id: 'nve:1000', stationId: '1000', name: 'Drammenselva', grade: 'III', description: 'Test', guideUrl: 'https://example.com', dangerLevels: [10, 30, 100, 300, 600], enabled: true, sources: ['nokken'], alternateNames: ['Old Name'] },
+      { id: 'nve:1000', stationId: '1000', name: 'Drammenselva', grade: 'III', description: 'Test', guideUrl: 'https://example.com', flowLevels: [10, 30, 100, 300, 600], enabled: true, sources: ['nokken'], alternateNames: ['Old Name'] },
     ]
     const merger = new MetadataMerger()
     const result = await merger.merge([source])
@@ -68,7 +68,7 @@ describe('MetadataMerger', () => {
     expect(r.grade).toBe('III')
     expect(r.description).toBe('Test')
     expect(r.guideUrl).toBe('https://example.com')
-    expect(r.dangerLevels).toEqual([10, 30, 100, 300, 600])
+    expect(r.flowLevels).toEqual([10, 30, 100, 300, 600])
     expect(r.enabled).toBe(true)
     expect(r.sources).toEqual(['nokken'])
   })

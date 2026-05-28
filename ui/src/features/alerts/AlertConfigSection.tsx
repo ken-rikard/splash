@@ -1,22 +1,22 @@
 import { useState } from 'react'
 import { Bell, Pencil, Trash2, Plus, X, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import type { AlertConfig, AlertLevel } from '@/types'
+import type { AlertConfig, FlowLevel } from '@/types'
 
-const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
+const LEVEL_LABELS = ['Empty', 'Low', 'Perfect', 'High', 'Extreme']
 
 interface AlertConfigSectionProps {
   config: AlertConfig | null
   loading: boolean
   riverId: string
-  updateConfig: (updates: { type: 'level' | 'numeric'; level?: AlertLevel; customValue?: number; enabled?: boolean }) => Promise<AlertConfig>
+  updateConfig: (updates: { type: 'level' | 'numeric'; level?: FlowLevel; customValue?: number; enabled?: boolean }) => Promise<AlertConfig>
   removeConfig: () => Promise<void>
 }
 
 export function AlertConfigSection({ config, loading, riverId: _riverId, updateConfig, removeConfig }: AlertConfigSectionProps) {
   const [editing, setEditing] = useState(false)
   const [type, setType] = useState<'level' | 'numeric'>(config?.type ?? 'level')
-  const [level, setLevel] = useState<AlertLevel>(config?.level ?? 3)
+  const [level, setLevel] = useState<FlowLevel>(config?.level ?? 3)
   const [customValue, setCustomValue] = useState(config?.customValue ?? 10)
   const [enabled, setEnabled] = useState(config?.enabled ?? true)
   const [saving, setSaving] = useState(false)
@@ -33,7 +33,7 @@ export function AlertConfigSection({ config, loading, riverId: _riverId, updateC
   async function handleSave() {
     setSaving(true)
     try {
-      const updates: { type: 'level' | 'numeric'; level?: AlertLevel; customValue?: number; enabled?: boolean } = {
+      const updates: { type: 'level' | 'numeric'; level?: FlowLevel; customValue?: number; enabled?: boolean } = {
         type,
         enabled,
       }
@@ -107,7 +107,7 @@ export function AlertConfigSection({ config, loading, riverId: _riverId, updateC
             <div>
               <label className="block text-xs text-slate-500 mb-2">Alert when level reaches</label>
               <div className="flex gap-1.5">
-                {([1, 2, 3, 4, 5] as AlertLevel[]).map((l) => (
+                {([1, 2, 3, 4, 5] as FlowLevel[]).map((l) => (
                   <button
                     key={l}
                     type="button"
@@ -201,7 +201,7 @@ export function AlertConfigSection({ config, loading, riverId: _riverId, updateC
       </div>
       <p className="text-xs text-slate-400">
         {config.type === 'level'
-          ? `Alert when danger level reaches ${config.level}/5 (${LEVEL_LABELS[(config.level ?? 3) - 1]})`
+          ? `Alert when flow level reaches ${config.level}/5 (${LEVEL_LABELS[(config.level ?? 3) - 1]})`
           : `Alert when flow exceeds ${config.customValue} m³/s`}
       </p>
       {config.enabled === false && (

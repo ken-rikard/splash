@@ -4,7 +4,7 @@ type FilterValue = 'all' | 'favorites'
 
 const GRADES = ['II', 'II+', 'III', 'III+', 'III−', 'IV', 'IV+', 'IV−', 'V', 'V+', 'V−', 'VI']
 
-const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
+const LEVEL_LABELS = ['Empty', 'Low', 'Perfect', 'High', 'Extreme']
 
 export type SortKey = 'name' | 'flow' | 'level' | 'distance'
 

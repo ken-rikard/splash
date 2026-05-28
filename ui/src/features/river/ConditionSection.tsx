@@ -1,22 +1,22 @@
-import { DangerLevelBar } from '@/components/shared/DangerLevelBar'
-import type { AlertLevel } from '@/types'
+import { FlowLevelBar } from '@/components/shared/FlowLevelBar'
+import type { FlowLevel } from '@/types'
 
-const LEVEL_COLORS: Record<AlertLevel, string> = {
+const LEVEL_COLORS: Record<FlowLevel, string> = {
   1: '#34d399',
   2: '#fbbf24',
-  3: '#fb923c',
-  4: '#fb7185',
-  5: '#a78bfa',
+  3: '#22d3ee',
+  4: '#fb923c',
+  5: '#fb7185',
 }
 
-const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
+const LEVEL_LABELS = ['Empty', 'Low', 'Perfect', 'High', 'Extreme']
 
-export function DangerLevelSection({
+export function ConditionSection({
   level,
   currentLevel,
   unit,
 }: {
-  level: AlertLevel
+  level: FlowLevel
   currentLevel: number | null
   unit: string
 }) {
@@ -26,7 +26,7 @@ export function DangerLevelSection({
   return (
     <div className="rounded-lg border border-white/5 bg-surface p-6 sm:p-8">
       <p className="text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-6">
-        Danger Level
+        Flow Condition
       </p>
       <div className="flex items-baseline gap-3 mb-1">
         <span className="text-5xl sm:text-6xl font-display font-bold text-white leading-none tracking-tight">
@@ -44,7 +44,7 @@ export function DangerLevelSection({
       >
         {label}
       </span>
-      <DangerLevelBar level={level} />
+      <FlowLevelBar level={level} />
       <div className="flex justify-between mt-2">
         {LEVEL_LABELS.map((lbl, i) => (
           <span

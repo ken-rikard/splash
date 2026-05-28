@@ -38,7 +38,7 @@ function DashboardPage() {
     }
 
     if (selectedLevels.length > 0) {
-      result = result.filter((r) => selectedLevels.includes(r.alertLevel))
+      result = result.filter((r) => selectedLevels.includes(r.conditionLevel))
     }
 
     result.sort((a, b) => {
@@ -54,7 +54,7 @@ function DashboardPage() {
       } else if (sortKey === 'flow') {
         cmp = (a.currentLevel ?? 0) - (b.currentLevel ?? 0)
       } else if (sortKey === 'level') {
-        cmp = a.alertLevel - b.alertLevel
+        cmp = a.conditionLevel - b.conditionLevel
       }
       return sortAsc ? cmp : -cmp
     })

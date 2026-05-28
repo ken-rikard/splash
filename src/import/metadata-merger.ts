@@ -40,17 +40,16 @@ export class MetadataMerger {
     let grade = ''
     let description = ''
     let guideUrl = ''
-    const dangerLevels: number[] = [0, 0, 0, 0, 0]
+    const flowLevels: number[] = [0, 0, 0, 0, 0]
 
-    for (const e of entries) {
-      if (e.name) allNames.add(e.name)
-      if (e.alternateNames) e.alternateNames.forEach((n) => allNames.add(n))
-      if (e.sources) e.sources.forEach((s) => allSources.add(s))
-      if (e.grade && !grade) grade = e.grade
-      if (e.description && e.description.length > description.length) description = e.description
-      if (e.guideUrl && !guideUrl) guideUrl = e.guideUrl
-      if (e.dangerLevels && e.dangerLevels.some((d) => d > 0)) {
-        e.dangerLevels.forEach((d, i) => { if (d > 0) dangerLevels[i] = d })
+    for (const entry of entries) {
+      if (entry.alternateNames) entry.alternateNames.forEach((n) => allNames.add(n))
+      if (entry.sources) entry.sources.forEach((s) => allSources.add(s))
+      if (entry.grade && this.preferValue(entry.grade, grade)) grade = entry.grade
+      if (entry.description && entry.description.length > description.length) description = entry.description
+      if (entry.guideUrl && !guideUrl) guideUrl = entry.guideUrl
+      if (entry.flowLevels) {
+        entry.flowLevels.forEach((d, i) => { if (d > 0) flowLevels[i] = d })
       }
     }
 
@@ -63,10 +62,15 @@ export class MetadataMerger {
       grade,
       description,
       guideUrl: guideUrl || undefined,
-      dangerLevels,
+      flowLevels,
       enabled: true,
       sources: [...allSources],
     }
+  }
+
+  private preferValue(a: string, b: string): boolean {
+    const order = ['', 'II', 'II+', 'III', 'III+', 'III−', 'IV', 'IV+', 'IV−', 'V', 'V+', 'V−', 'VI']
+    return order.indexOf(a) > order.indexOf(b)
   }
 
   private toFullEntry(partial: Partial<RiverEntry>): RiverEntry {
@@ -78,7 +82,7 @@ export class MetadataMerger {
       grade: partial.grade || '',
       description: partial.description || '',
       guideUrl: partial.guideUrl || undefined,
-      dangerLevels: partial.dangerLevels || [0, 0, 0, 0, 0],
+      flowLevels: partial.flowLevels || [0, 0, 0, 0, 0],
       enabled: partial.enabled ?? true,
       sources: partial.sources || [],
     }

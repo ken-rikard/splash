@@ -1,4 +1,4 @@
-export type AlertLevel = 1 | 2 | 3 | 4 | 5
+export type FlowLevel = 1 | 2 | 3 | 4 | 5
 
 export type RiverStatus = 'ok' | 'stale' | 'error'
 
@@ -12,7 +12,7 @@ export interface RiverData {
   longitude?: number
   currentLevel: number | null
   unit: string
-  alertLevel: AlertLevel
+  conditionLevel: FlowLevel
   lastUpdated: Date
   status: RiverStatus
   error?: string
@@ -28,7 +28,7 @@ export interface RiverEntry {
   grade: string
   description: string
   guideUrl?: string
-  dangerLevels: number[]
+  flowLevels: number[]
   enabled: boolean
   sources: string[]
 }
@@ -44,7 +44,7 @@ export interface ScraperStatus {
 export interface AlertConfig {
   riverId: string
   type: 'level' | 'numeric'
-  level?: AlertLevel
+  level?: FlowLevel
   customValue?: number
   enabled: boolean
 }
@@ -54,7 +54,7 @@ export interface ActiveAlert {
   config: AlertConfig
   threshold: number
   currentValue: number
-  alertLevel: AlertLevel
+  conditionLevel: FlowLevel
   triggeredAt: Date
   snapshot: RiverData
 }

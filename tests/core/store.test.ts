@@ -10,7 +10,7 @@ function makeRiver(id: string, lastUpdated: Date): RiverData {
     stationId: id,
     currentLevel: 10,
     unit: 'm³/s',
-    alertLevel: 2,
+    conditionLevel: 2,
     lastUpdated,
     status: 'ok',
   }

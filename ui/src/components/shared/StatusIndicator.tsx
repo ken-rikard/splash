@@ -1,11 +1,11 @@
-import type { AlertLevel, RiverStatus } from '@/types'
+import type { FlowLevel, RiverStatus } from '@/types'
 
-const DANGER_COLORS: Record<AlertLevel, string> = {
+const LEVEL_COLORS: Record<FlowLevel, string> = {
   1: '#34d399',
   2: '#fbbf24',
-  3: '#fb923c',
-  4: '#fb7185',
-  5: '#a78bfa',
+  3: '#22d3ee',
+  4: '#fb923c',
+  5: '#fb7185',
 }
 
 const STATUS_COLORS: Record<RiverStatus, string> = {
@@ -14,8 +14,8 @@ const STATUS_COLORS: Record<RiverStatus, string> = {
   error: '#fb7185',
 }
 
-export function StatusDot({ level, status }: { level: AlertLevel; status: RiverStatus }) {
-  const color = status === 'ok' ? DANGER_COLORS[level] : STATUS_COLORS[status]
+export function StatusDot({ level, status }: { level: FlowLevel; status: RiverStatus }) {
+  const color = status === 'ok' ? LEVEL_COLORS[level] : STATUS_COLORS[status]
   return (
     <span
       className="inline-block h-3 w-3 rounded-full flex-shrink-0"

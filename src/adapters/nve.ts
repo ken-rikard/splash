@@ -1,4 +1,4 @@
-import type { AlertLevel, RiverData } from '../core/types.js'
+import type { FlowLevel, RiverData } from '../core/types.js'
 import type { DatasourceAdapter } from '../core/adapter.js'
 import { nveApiKey } from '../config.js'
 
@@ -13,7 +13,7 @@ const ALERT_THRESHOLDS: Record<string, [number, number, number, number, number]>
   '151.15.0': [20, 50, 150, 300, 600],
 }
 
-function computeAlertLevel(stationId: string, flow: number): AlertLevel {
+function computeFlowLevel(stationId: string, flow: number): FlowLevel {
   const thresholds = ALERT_THRESHOLDS[stationId]
   if (thresholds) {
     if (flow <= thresholds[0]) return 1
@@ -118,7 +118,7 @@ export class NveHydApiAdapter implements DatasourceAdapter {
       stationId: station.stationId,
       currentLevel: lastObs.value,
       unit: station.unit,
-      alertLevel: computeAlertLevel(station.stationId, lastObs.value),
+      conditionLevel: computeFlowLevel(station.stationId, lastObs.value),
       lastUpdated: new Date(lastObs.time),
       status: 'ok',
     }

@@ -4,7 +4,7 @@ import { StatusDot } from '@/components/shared/StatusIndicator'
 import { Button } from '@/components/ui/button'
 import type { ActiveAlert } from '@/types'
 
-const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
+const LEVEL_LABELS = ['Empty', 'Low', 'Perfect', 'High', 'Extreme']
 
 export function AlertCard({
   alert,
@@ -15,7 +15,7 @@ export function AlertCard({
   onDismiss: (riverId: string) => void
   index?: number
 }) {
-  const levelLabel = LEVEL_LABELS[alert.alertLevel - 1]
+  const levelLabel = LEVEL_LABELS[alert.conditionLevel - 1]
   const thresholdLabel = alert.config.type === 'level'
     ? `Level ${alert.config.level!} (${LEVEL_LABELS[alert.config.level! - 1]})`
     : `${alert.config.customValue} m³/s`
@@ -49,7 +49,7 @@ export function AlertCard({
       </div>
 
       <div className="flex items-center gap-3 mt-3">
-        <StatusDot level={alert.alertLevel} status="ok" />
+        <StatusDot level={alert.conditionLevel} status="ok" />
         <span className="text-xs font-medium text-slate-400">
           {levelLabel}
         </span>

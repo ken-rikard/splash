@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router'
 import { useRiver } from '@/hooks/useRiver'
 import { useFavorites } from '@/hooks/useFavorites'
 import { FavoriteButton } from '@/components/shared/FavoriteButton'
-import { DangerLevelSection } from './DangerLevelSection'
+import { ConditionSection } from './ConditionSection'
 import { StatusDot } from '@/components/shared/StatusIndicator'
 import ErrorState from '@/components/shared/ErrorState'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -102,14 +102,14 @@ function RiverDetailPage() {
 
         <div className="flex items-center gap-2 text-xs text-slate-500">
           <span className="inline-flex items-center gap-1.5">
-            <StatusDot level={river.alertLevel} status={river.status} />
+            <StatusDot level={river.conditionLevel} status={river.status} />
             {river.status}
           </span>
         </div>
       </div>
 
-      <DangerLevelSection
-        level={river.alertLevel}
+      <ConditionSection
+        level={river.conditionLevel}
         currentLevel={river.currentLevel}
         unit={river.unit}
       />

@@ -20,7 +20,7 @@ function extractStationId(gaugeUrl: string): string {
   return match ? match[1]! : ''
 }
 
-function limitsToDangerLevels(limits: number[]): number[] {
+function limitsToFlowLevels(limits: number[]): number[] {
   if (limits.length >= 4) {
     return [limits[0]!, limits[1]!, limits[2]!, limits[3]!, limits[3]! * 2]
   }
@@ -55,7 +55,7 @@ export class HvorErDetVannMetadataScraper {
           alternateNames: [],
           grade: '',
           description: item.section.text || '',
-          dangerLevels: limitsToDangerLevels(item.section.limits),
+          flowLevels: limitsToFlowLevels(item.section.limits),
           enabled: true,
           sources: ['hvorerdetvann'],
         }

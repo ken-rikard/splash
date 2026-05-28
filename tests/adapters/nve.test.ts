@@ -90,7 +90,7 @@ describe('NveHydApiAdapter', () => {
     expect(r).toHaveProperty('stationId', '6.9.0')
     expect(r).toHaveProperty('currentLevel', 1.438465)
     expect(r).toHaveProperty('unit', 'm³/s')
-    expect(r).toHaveProperty('alertLevel')
+    expect(r).toHaveProperty('conditionLevel')
     expect(r).toHaveProperty('status', 'ok')
   })
 

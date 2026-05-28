@@ -1,11 +1,11 @@
 import { StatusDot } from '@/components/shared/StatusIndicator'
-import { DangerLevelBar } from '@/components/shared/DangerLevelBar'
+import { FlowLevelBar } from '@/components/shared/FlowLevelBar'
 import { FavoriteButton } from '@/components/shared/FavoriteButton'
 import { Link } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import type { RiverData } from '@/types'
 
-const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
+const LEVEL_LABELS = ['Empty', 'Low', 'Perfect', 'High', 'Extreme']
 
 export function RiverCard({
   river,
@@ -24,7 +24,7 @@ export function RiverCard({
       style={{ animationDelay: `${index * 80}ms` }}
     >
       <div className="flex items-center gap-3 min-w-0 mb-3">
-        <StatusDot level={river.alertLevel} status={river.status} />
+        <StatusDot level={river.conditionLevel} status={river.status} />
         <p className="font-medium text-white truncate flex-1">{river.name}</p>
         <FavoriteButton
           riverId={river.id}
@@ -41,7 +41,7 @@ export function RiverCard({
         {river.grade && <span className="text-sm text-slate-500" title="Grade" >{river.grade}</span>}
       </div>
 
-      <DangerLevelBar level={river.alertLevel} />
+      <FlowLevelBar level={river.conditionLevel} />
 
       <Link
         to={`/river/${river.id}`}
