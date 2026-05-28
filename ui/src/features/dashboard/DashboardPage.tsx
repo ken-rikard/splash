@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { Heart, MapPin } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
@@ -26,7 +26,7 @@ function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Array<{ lat: string; lon: string; display_name: string }>>([])
   const [searching, setSearching] = useState(false)
-  const searchTimer = useRef<ReturnType<typeof setTimeout>>()
+  const searchTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const displayRivers = useMemo(() => {
     let result = filter === 'favorites'
@@ -46,7 +46,7 @@ function DashboardPage() {
       if (sortKey === 'name') {
         cmp = a.name.localeCompare(b.name)
       } else if (sortKey === 'distance') {
-        if (homeLocation && a.latitude != null && b.latitude != null) {
+        if (homeLocation && a.latitude != null && b.latitude != null && a.longitude != null && b.longitude != null) {
           const da = haversineKm(homeLocation.latitude, homeLocation.longitude, a.latitude, a.longitude)
           const db = haversineKm(homeLocation.latitude, homeLocation.longitude, b.latitude, b.longitude)
           cmp = da - db

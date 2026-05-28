@@ -5,8 +5,6 @@ import { Link } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import type { RiverData } from '@/types'
 
-const LEVEL_LABELS = ['Empty', 'Low', 'Perfect', 'High', 'Extreme']
-
 export function RiverCard({
   river,
   index = 0,
