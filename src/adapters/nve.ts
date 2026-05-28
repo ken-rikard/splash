@@ -113,6 +113,7 @@ export class NveHydApiAdapter implements DatasourceAdapter {
     return {
       id: `nve:${station.stationId}`,
       name: station.stationName,
+      stationName: station.stationName,
       source: 'nve',
       stationId: station.stationId,
       currentLevel: lastObs.value,

@@ -5,6 +5,7 @@ export type RiverStatus = 'ok' | 'stale' | 'error'
 export interface RiverData {
   id: string
   name: string
+  stationName?: string
   source: string
   stationId: string
   currentLevel: number | null

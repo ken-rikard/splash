@@ -15,7 +15,7 @@ app.use(express.json())
 function enrichWithRegistry(river: RiverData) {
   const entry = engine.registry ? registryCache.get(river.id) : undefined
   if (!entry) return river as RiverData & { grade?: string; description?: string }
-  return { ...river, name: entry.name, grade: entry.grade, description: entry.description }
+  return { ...river, stationName: river.name, name: entry.name, grade: entry.grade, description: entry.description }
 }
 
 let registryCache = new Map<string, { name: string; grade: string; description: string }>()

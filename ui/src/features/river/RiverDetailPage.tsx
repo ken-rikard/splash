@@ -64,9 +64,14 @@ function RiverDetailPage() {
 
       <div className="rounded-lg border border-white/5 bg-gradient-to-b from-surface to-surface/80 p-6 sm:p-8 mb-6">
         <div className="flex items-start justify-between gap-4 mb-6">
-          <h1 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight leading-tight">
-            {river.name}
-          </h1>
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight leading-tight">
+              {river.name}
+            </h1>
+            {river.stationName && river.stationName !== river.name && (
+              <p className="text-xs text-slate-500 mt-1">NVE station: {river.stationName}</p>
+            )}
+          </div>
           <FavoriteButton
             riverId={river.id}
             isFavorite={isFavorite(river.id)}
