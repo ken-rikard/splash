@@ -23,31 +23,21 @@ export function RiverCard({
       className="group rounded-lg border border-white/5 bg-surface p-5 hover:border-white/10 hover:bg-surface-elevated transition-all duration-300 opacity-0 animate-fade-in-up"
       style={{ animationDelay: `${index * 80}ms` }}
     >
-      <div className="flex items-start justify-between mb-1">
-        <div className="flex items-center gap-3 min-w-0">
-          <StatusDot level={river.alertLevel} status={river.status} />
-          <p className="font-medium text-white truncate">{river.name}</p>
-        </div>
-        <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-          <FavoriteButton
-            riverId={river.id}
-            isFavorite={isFavorite}
-            onToggle={onToggleFavorite}
-          />
-          <p className="text-2xl sm:text-3xl font-display font-bold text-white leading-none tracking-tight">
-            {river.currentLevel ?? '—'}
-          </p>
-        </div>
+      <div className="flex items-center gap-3 min-w-0 mb-3">
+        <StatusDot level={river.alertLevel} status={river.status} />
+        <p className="font-medium text-white truncate flex-1">{river.name}</p>
+        <FavoriteButton
+          riverId={river.id}
+          isFavorite={isFavorite}
+          onToggle={onToggleFavorite}
+        />
       </div>
 
-      <div className="flex items-center justify-between mt-1 mb-4">
-        <p className="text-xs text-slate-500 tracking-wide">
-          {river.grade && <span>{river.grade} · </span>}
-          {river.unit}
+      <div className="flex items-baseline gap-1.5 mb-4">
+        <p className="text-2xl sm:text-3xl font-display font-bold text-white leading-none tracking-tight">
+          {river.currentLevel ?? '—'}
         </p>
-        <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
-          {river.alertLevel}/5 · {LEVEL_LABELS[river.alertLevel - 1]}
-        </span>
+        <span className="text-sm text-slate-500">{river.unit}</span>
       </div>
 
       <DangerLevelBar level={river.alertLevel} />
