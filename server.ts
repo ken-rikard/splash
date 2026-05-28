@@ -15,16 +15,16 @@ app.use(express.json())
 function enrichWithRegistry(river: RiverData) {
   const entry = engine.registry ? registryCache.get(river.id) : undefined
   if (!entry) return river as RiverData & { grade?: string; description?: string }
-  return { ...river, grade: entry.grade, description: entry.description }
+  return { ...river, name: entry.name, grade: entry.grade, description: entry.description }
 }
 
-let registryCache = new Map<string, { grade: string; description: string }>()
+let registryCache = new Map<string, { name: string; grade: string; description: string }>()
 
 async function refreshRegistryCache() {
   if (!engine.registry) return
   const entries = await engine.registry.load()
   registryCache = new Map(
-    entries.filter((e) => e.grade || e.description).map((e) => [e.id, { grade: e.grade, description: e.description }])
+    entries.map((e) => [e.id, { name: e.name, grade: e.grade, description: e.description }])
   )
 }
 
