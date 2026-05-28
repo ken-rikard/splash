@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: splash
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: cd ui && npm ci && npm run build && cd .. && npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NVE_API_KEY
+        sync: false
+      - key: PORT
+        value: "10000"
