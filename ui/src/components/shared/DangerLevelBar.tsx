@@ -1,6 +1,6 @@
 import type { AlertLevel } from '@/types'
 
-const LEVEL_COLORS = ['#34d399', '#fbbf24', '#fb923c', '#fb7185', '#a78bfa']
+const LEVEL_COLORS = ['#000000', '#34d399', '#fbbf24', '#fb923c', '#fb7185', '#a78bfa']
 const LEVEL_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
 
 export function DangerLevelBar({ level }: { level: AlertLevel }) {

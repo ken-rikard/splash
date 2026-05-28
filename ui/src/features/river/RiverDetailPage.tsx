@@ -7,14 +7,15 @@ import { StatusDot } from '@/components/shared/StatusIndicator'
 import ErrorState from '@/components/shared/ErrorState'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, MapPin, Clock, Bell } from 'lucide-react'
+import { ArrowLeft, MapPin, Clock } from 'lucide-react'
 import { useAlertConfig } from '@/hooks/useAlertConfig'
+import { AlertConfigSection } from '@/features/alerts/AlertConfigSection'
 
 function RiverDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { river, status } = useRiver(id!)
   const { isFavorite, toggleFavorite } = useFavorites()
-  const { config: alertConfig, loading: configLoading } = useAlertConfig(id!)
+  const { config: alertConfig, loading: configLoading, updateConfig, removeConfig } = useAlertConfig(id!)
 
   if (status === 'loading') {
     return (
@@ -108,26 +109,13 @@ function RiverDetailPage() {
         unit={river.unit}
       />
 
-      {configLoading ? (
-        <div className="mt-6 rounded-lg border border-white/5 bg-surface p-4">
-          <div className="h-4 w-32 bg-white/10 animate-pulse rounded" />
-        </div>
-      ) : alertConfig ? (
-        <div className="mt-6 rounded-lg border border-white/5 bg-surface p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Bell className="h-4 w-4 text-accent-water" />
-            <h2 className="text-sm font-display font-semibold text-white tracking-wide">Alert Configuration</h2>
-          </div>
-          <p className="text-xs text-slate-400">
-            {alertConfig.type === 'level'
-              ? `Alert when danger level reaches ${alertConfig.level}/5`
-              : `Alert when flow exceeds ${alertConfig.customValue} m³/s`}
-          </p>
-          {alertConfig.enabled === false && (
-            <p className="text-xs text-amber-400/80 mt-1">Alert is currently disabled.</p>
-          )}
-        </div>
-      ) : null}
+      <AlertConfigSection
+        config={alertConfig}
+        loading={configLoading}
+        riverId={id!}
+        updateConfig={updateConfig}
+        removeConfig={removeConfig}
+      />
 
       {staleWarning && (
         <div className="mt-4 rounded-lg border border-amber-500/10 bg-amber-500/5 px-4 py-3 text-sm text-amber-400/80">
