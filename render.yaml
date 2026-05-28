@@ -4,7 +4,7 @@ services:
     runtime: node
     region: frankfurt
     plan: free
-    buildCommand: cd ui && npm ci && npm run build && cd .. && npm ci --include=dev && npm run build
+    buildCommand: cd ui && npm ci && npm run build && cd .. && npm ci && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
