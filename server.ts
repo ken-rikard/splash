@@ -39,6 +39,11 @@ async function refreshRegistryCache() {
 refreshRegistryCache()
 setInterval(refreshRegistryCache, 60000)
 
+// Health check — returns 200 with service status (used by Render keep-alive)
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() })
+})
+
 // REST: return all rivers
 app.get('/api/rivers', (_req, res) => {
   const rivers = engine.dataStore.getAll().map(enrichWithRegistry)
