@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Heart, MapPin } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
@@ -23,6 +23,10 @@ function DashboardPage() {
   const [showHomeDialog, setShowHomeDialog] = useState(false)
   const [homeLat, setHomeLat] = useState('')
   const [homeLng, setHomeLng] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<Array<{ lat: string; lon: string; display_name: string }>>([])
+  const [searching, setSearching] = useState(false)
+  const searchTimer = useRef<ReturnType<typeof setTimeout>>()
 
   const displayRivers = useMemo(() => {
     let result = filter === 'favorites'
@@ -143,31 +147,85 @@ function DashboardPage() {
       </div>
 
       {showHomeDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setShowHomeDialog(false)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-black/60" onClick={() => setShowHomeDialog(false)}>
           <div className="rounded-lg border border-white/10 bg-surface p-6 w-full max-w-sm mx-4" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-sm font-display font-semibold text-white mb-4">Set Home Location</h2>
             <div className="space-y-3">
               <div>
-                <label className="block text-[10px] text-slate-500 uppercase tracking-widest mb-1">Latitude</label>
+                <label className="block text-[10px] text-slate-500 uppercase tracking-widest mb-1">Search place</label>
                 <input
-                  type="number"
-                  step="any"
-                  value={homeLat}
-                  onChange={(e) => setHomeLat(e.target.value)}
-                  placeholder="e.g. 59.91"
-                  className="w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-accent-water/40 focus:outline-none"
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value)
+                    clearTimeout(searchTimer.current)
+                    const q = e.target.value.trim()
+                    if (q.length < 2) { setSearchResults([]); return }
+                    searchTimer.current = setTimeout(() => {
+                      setSearching(true)
+                      fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5`, { headers: { 'Accept': 'application/json' } })
+                        .then((r) => r.json())
+                        .then((data) => { setSearchResults(data); setSearching(false) })
+                        .catch(() => { setSearching(false) })
+                    }, 400)
+                  }}
+                  placeholder="e.g. Oslo, Bergen, Trondheim…"
+                  className="w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-accent-water/40 focus:outline-none"
                 />
+                {searching && <p className="text-[10px] text-slate-600 mt-1">Searching…</p>}
+                {searchResults.length > 0 && (
+                  <div className="mt-1 rounded border border-white/5 bg-surface overflow-hidden max-h-48 overflow-y-auto">
+                    {searchResults.map((r, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 last:border-0"
+                        onClick={() => {
+                          setLocation(parseFloat(r.lat), parseFloat(r.lon), r.display_name)
+                          setShowHomeDialog(false)
+                          setSearchQuery('')
+                          setSearchResults([])
+                        }}
+                      >
+                        {r.display_name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-              <div>
-                <label className="block text-[10px] text-slate-500 uppercase tracking-widest mb-1">Longitude</label>
-                <input
-                  type="number"
-                  step="any"
-                  value={homeLng}
-                  onChange={(e) => setHomeLng(e.target.value)}
-                  placeholder="e.g. 10.75"
-                  className="w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-accent-water/40 focus:outline-none"
-                />
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-white/5" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-surface px-2 text-[10px] text-slate-600 uppercase">or enter coordinates</span>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <label className="block text-[10px] text-slate-500 uppercase tracking-widest mb-1">Latitude</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={homeLat}
+                    onChange={(e) => setHomeLat(e.target.value)}
+                    placeholder="e.g. 59.91"
+                    className="w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-accent-water/40 focus:outline-none"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-[10px] text-slate-500 uppercase tracking-widest mb-1">Longitude</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={homeLng}
+                    onChange={(e) => setHomeLng(e.target.value)}
+                    placeholder="e.g. 10.75"
+                    className="w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-accent-water/40 focus:outline-none"
+                  />
+                </div>
               </div>
               <div className="flex gap-2 pt-1">
                 <Button
@@ -182,7 +240,7 @@ function DashboardPage() {
                   }}
                   disabled={!homeLat || !homeLng}
                 >
-                  Save
+                  Save coords
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => setShowHomeDialog(false)}>Cancel</Button>
               </div>
